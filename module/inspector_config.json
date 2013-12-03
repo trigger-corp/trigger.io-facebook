@@ -1,0 +1,10 @@
+{
+	"modules": {
+		"facebook": {
+			"version": "2.0",
+			"config": {
+				"appid": "319333711443283"
+			}
+		}
+	}
+}

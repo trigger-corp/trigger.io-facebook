@@ -1,0 +1,11 @@
+{
+	"type": "object",
+	"additionalProperties": false,
+	"properties": {
+		"appid": {
+			"description": "App ID from Facebook developers site.",
+			"required": true,
+			"type": "string"
+		}
+	}
+}
