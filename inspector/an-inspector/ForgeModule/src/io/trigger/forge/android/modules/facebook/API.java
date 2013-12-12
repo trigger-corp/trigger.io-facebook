@@ -87,6 +87,10 @@ public class API {
 		}
 		return runner;
 	}
+	
+	private static SharedPreferences getStorage(ForgeTask task) {
+ 		return ForgeApp.getActivity().getSharedPreferences("facebook", 0);
+ 	}
 
 	public static void authorize(final ForgeTask task, @ForgeParam("permissions") final JsonArray permissionsJSON, @ForgeParam("dialog") final boolean dialog) {
 		partnerProgram(task);
@@ -98,6 +102,16 @@ public class API {
 		}
 		final Facebook facebook = getFacebook(task);
 		
+		final SharedPreferences prefs = getStorage(task);
+		String access_token = prefs.getString("access_token", null);
+		long expires = prefs.getLong("access_expires", 0);
+		if (access_token != null) {
+			facebook.setAccessToken(access_token);
+		}
+		if (expires != 0) {
+			facebook.setAccessExpires(expires);
+		}
+		
 		if (facebook.isSessionValid() && Util.grantedPermissionsAreSuperset(facebook.getSession().getPermissions(), permissionsJSON)) {
 			JsonObject details = new JsonObject();
 			details.addProperty("access_token", facebook.getAccessToken());
@@ -108,6 +122,10 @@ public class API {
 				public void run() {
 					facebook.authorize(ForgeApp.getActivity(), permissions, new DialogListener() {
 						public void onComplete(Bundle values) {
+							SharedPreferences.Editor editor = prefs.edit();
+							editor.putString("access_token", facebook.getAccessToken());
+							editor.putLong("access_expires", facebook.getAccessExpires());
+							editor.commit();
 							JsonObject details = new JsonObject();
 							details.addProperty("access_token", facebook.getAccessToken());
 							details.addProperty("access_expires", facebook.getAccessExpires());
