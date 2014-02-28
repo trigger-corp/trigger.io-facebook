@@ -1,0 +1,5 @@
+[
+	{ "do": { "android_add_proguard_rule": "-keepattributes Signature" } },
+	{ "do": { "android_add_proguard_rule": "-dontwarn com.facebook.**" } },
+	{ "do": { "android_add_proguard_rule": "-keep class com.facebook.** { *; }" } }
+]
