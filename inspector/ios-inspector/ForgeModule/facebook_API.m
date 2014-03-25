@@ -30,10 +30,10 @@
 				subtype:nil];
 			return;
 		} else {
-			[task success:
-			 @{@"access_token": session.accessToken,
-			 @"access_expires": [NSNumber numberWithDouble:round([session.expirationDate timeIntervalSince1970]*1000.0)]
-			 }];
+			[task success:@{
+                @"access_token": session.accessToken,
+			    @"access_expires": [NSNumber numberWithDouble:round([session.expirationDate timeIntervalSince1970] * 1000.0)]
+            }];
 			return;
 		}
 	};
@@ -51,10 +51,10 @@
 											   defaultAudience:[facebook_Util lookupAudience:audience]
 											 completionHandler:publishHandler];
 				} else {
-					[task success:
-					 @{@"access_token": session.accessToken,
-					 @"access_expires": [NSNumber numberWithDouble:round([session.expirationDate timeIntervalSince1970]*1000.0)]
-					 }];
+					[task success: @{
+                        @"access_token": session.accessToken,
+					    @"access_expires": [NSNumber numberWithDouble:round([session.expirationDate timeIntervalSince1970]*1000.0)]
+                    }];
 				}
 				return;
 			case FBSessionStateClosed:
@@ -78,9 +78,10 @@
 		if ([facebook_Util permissionsAllowedByPermissions:FBSession.activeSession.permissions requestedPermissions:permissionsArray]) {
 			// valid session AND all requested permissions already allowed
 //			[ForgeLog d:[NSString stringWithFormat:@"re-using existing valid Facebook session for %@", permissionsArray]];
-			[task success:@{@"access_token": FBSession.activeSession.accessToken,
-			 @"access_expires": [NSNumber numberWithDouble:round([FBSession.activeSession.expirationDate timeIntervalSince1970]*1000.0)]
-			 }];
+			[task success:@{
+                @"access_token": FBSession.activeSession.accessToken,
+                @"access_expires": [NSNumber numberWithDouble:round([FBSession.activeSession.expirationDate timeIntervalSince1970]*1000.0)]
+            }];
 		} else {
 			// already authorized session doesn't have sufficient permissions
 			if (loginUI) {

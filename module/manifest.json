@@ -1,8 +1,8 @@
 {
-    "changes": "* Upgraded Facebook iOS SDK version to v3.12\n* Upgraded Facebook Android SDK version to v3.6", 
+    "changes": "* Support error handling changes introduced with new iOS SDK\n* TODO", 
     "description": "Access the Facebook SDK.\n\nThe facebook module allows access to native Facebook SDK features including SSO authentication through the Facebook app, Facebook share dialog access and Facebook graph API access.", 
     "min_platform_version": "v2.1.0", 
     "namespace": "facebook", 
     "platform_version": "v2.1.0", 
-    "version": "2.3"
+    "version": "2.4"
 }

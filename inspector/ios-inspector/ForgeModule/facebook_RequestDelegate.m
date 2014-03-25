@@ -21,7 +21,13 @@
 }
 
 - (void) request:(FBRequest *)request didFailWithError:(NSError *)error {
-	[task error:error.userInfo];
+    if ([FBErrorUtility shouldNotifyUserForError:error] == YES) {
+        [task error:[FBErrorUtility userMessageForError:error]];
+    } else {
+        NSDictionary *info = [[[error userInfo] objectForKey:@"com.facebook.sdk:ParsedJSONResponseKey"]
+                                                objectForKey:@"error"];
+        [task error:info];
+    }
 	// "release"
 	me = nil;
 	fb = nil;

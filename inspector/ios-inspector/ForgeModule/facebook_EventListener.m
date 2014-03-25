@@ -11,7 +11,8 @@
 
 @implementation facebook_EventListener
 
-+ (void) application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {	    [FBSession setDefaultAppID:[[[ForgeApp sharedApp] configForPlugin:@"facebook"] objectForKey:(@"appid")]];
++ (void) application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+    [FBSession setDefaultAppID:[[[ForgeApp sharedApp] configForPlugin:@"facebook"] objectForKey:(@"appid")]];
 }
 
 + (NSNumber*)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
