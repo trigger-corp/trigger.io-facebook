@@ -52,25 +52,31 @@ static BOOL partnerProgramNotified = NO;
 	return [[facebook_Util publishPermissionsInPermissions:permissions] count] > 0;
 }
 
-
++ (NSArray *)OldpublishPermissions {
+    // Currently documented at https://developers.facebook.com/docs/howtos/ios-6/
+    // Also see: https://developers.facebook.com/docs/facebook-login/permissions/
+    static NSArray *_publishPermissions;
+    static dispatch_once_t t;
+    dispatch_once(&t, ^{
+        _publishPermissions = @[@"ads_management", @"create_event", @"rsvp_event", @"manage_friendlists", @"manage_notifications", @"manage_pages", @"publish_actions", @"publish_stream"];
+    });
+    return _publishPermissions;
+}
 
 +(NSArray*)readPermissionsInPermissions:(NSArray*)permissions {
-	// Currently documented at https://developers.facebook.com/docs/howtos/ios-6/
-	NSArray *publishPermissions = @[@"ads_management", @"create_event", @"rsvp_event", @"manage_friendlists", @"manage_notifications", @"manage_pages", @"publish_actions"];
+    NSArray *publishPermissions = @[@"ads_management", @"create_event", @"rsvp_event", @"manage_friendlists", @"manage_notifications", @"manage_pages", @"publish_actions", @"publish_stream"];
 	NSIndexSet *publishIndexes = [permissions indexesOfObjectsPassingTest:^BOOL(NSString *permission, NSUInteger idx, BOOL *stop) {
+		//return ![[[self class] publishPermissions] containsObject:permission];
 		return ![publishPermissions containsObject:permission];
 	}];
-	
 	return [permissions objectsAtIndexes:publishIndexes];
 }
 
 +(NSArray*)publishPermissionsInPermissions:(NSArray*)permissions {
-	// Currently documented at https://developers.facebook.com/docs/howtos/ios-6/
-	NSArray *publishPermissions = @[@"ads_management", @"create_event", @"rsvp_event", @"manage_friendlists", @"manage_notifications", @"manage_pages", @"publish_actions"];
+    NSArray *publishPermissions = @[@"ads_management", @"create_event", @"rsvp_event", @"manage_friendlists", @"manage_notifications", @"manage_pages", @"publish_actions", @"publish_stream"];
 	NSIndexSet *publishIndexes = [permissions indexesOfObjectsPassingTest:^BOOL(NSString *permission, NSUInteger idx, BOOL *stop) {
 		return [publishPermissions containsObject:permission];
 	}];
-	
 	return [permissions objectsAtIndexes:publishIndexes];
 }
 
@@ -98,5 +104,62 @@ static BOOL partnerProgramNotified = NO;
 		return FBSessionDefaultAudienceFriends;
 	}
 }
+
+
++ (void)handleError:(NSError *)error task:(ForgeTask*)task {
+    [facebook_Util handleError:error task:task closeSession:true];
+}
+
+
++ (void)handleError:(NSError *)error task:(ForgeTask*)task closeSession:(BOOL)closeSession {
+    //[ForgeLog d:[NSString stringWithFormat:@"facebook_Util.handleError: %@", error]];
+    
+    if ([FBErrorUtility shouldNotifyUserForError:error] == YES) {
+        [task error:[FBErrorUtility userMessageForError:error]];
+    } else if ([FBErrorUtility errorCategoryForError:error] == FBErrorCategoryUserCancelled) {
+        [task error:@"User cancelled login" type:@"EXPECTED_FAILURE" subtype:nil];
+    } else if ([FBErrorUtility errorCategoryForError:error] == FBErrorCategoryAuthenticationReopenSession){
+        [task error:@"Your current session is no longer valid. Please log in again."];
+    } else {
+        NSDictionary *parsedError = [facebook_Util ParseFacebookError:error];
+        if (parsedError) {
+            [task error:parsedError];
+        } else {
+            [task error:[NSString stringWithFormat:@"Unknown error: %@", error] type:@"UNEXPECTED_FAILURE" subtype:nil];
+        }
+    }
+    
+    if (closeSession) {
+        [FBSession.activeSession closeAndClearTokenInformation];
+    }
+}
+
+
++ (NSDictionary*) ParseFacebookError:(NSError*)error {
+    if (error == nil || [error userInfo] == nil) {
+        return nil;
+    }
+    
+    id err = [error userInfo] [@"com.facebook.sdk:ParsedJSONResponseKey"];
+    //[ForgeLog d:[NSString stringWithFormat:@"ParseFacebookError response class: %@", NSStringFromClass([err class])]];
+    
+    if ([err isKindOfClass:[NSDictionary class]]) {
+        // sanity
+    } else if (![err respondsToSelector:@selector(objectForKey)] && [err isKindOfClass:[NSArray class]]) {
+        err = [err objectAtIndex:0];
+    } else {
+        [ForgeLog d:@"ParseFacebookError: Couldn't parse com.facebook.sdk:ParsedJSONResponseKey"];
+        return [error userInfo];
+    }
+    if (err [@"body"] [@"error"] != nil) {
+        err = err [@"body"] [@"error"];
+    } else if (err [@"error"] != nil) {
+        err = err [@"error"];
+    } else {
+        err = [error userInfo];
+    }
+    return err;
+};
+
 
 @end

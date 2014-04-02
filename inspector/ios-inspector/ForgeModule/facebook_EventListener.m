@@ -12,24 +12,21 @@
 @implementation facebook_EventListener
 
 + (void) application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    [FBSession setDefaultAppID:[[[ForgeApp sharedApp] configForPlugin:@"facebook"] objectForKey:(@"appid")]];
+    [FBSettings setDefaultAppID:[[[ForgeApp sharedApp] configForPlugin:@"facebook"] objectForKey:(@"appid")]];
 }
+
+
++ (void)applicationDidBecomeActive:(UIApplication *)application {
+    [FBAppCall handleDidBecomeActive];
+}
+
 
 + (NSNumber*)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation {
-	if ([FBSession.activeSession handleOpenURL:url]) {
+	if ([FBAppCall handleOpenURL:url sourceApplication:sourceApplication]) {
 		return @YES;
 	} else {
 		return nil;
 	}
 }
-
-+ (NSNumber*)application:(UIApplication *)application handleOpenURL:(NSURL *)url {
-	if ([FBSession.activeSession handleOpenURL:url]) {
-		return @YES;
-	} else {
-		return nil;
-	}
-}
-
 
 @end

@@ -6,6 +6,7 @@
 //  Copyright (c) 2012 Trigger Corp. All rights reserved.
 //
 
+#import "facebook_Util.h"
 #import "facebook_RequestDelegate.h"
 
 @implementation facebook_RequestDelegate
@@ -20,21 +21,20 @@
 	return self;
 }
 
+
 - (void) request:(FBRequest *)request didFailWithError:(NSError *)error {
-    if ([FBErrorUtility shouldNotifyUserForError:error] == YES) {
-        [task error:[FBErrorUtility userMessageForError:error]];
-    } else {
-        NSDictionary *info = [[[error userInfo] objectForKey:@"com.facebook.sdk:ParsedJSONResponseKey"]
-                                                objectForKey:@"error"];
-        [task error:info];
-    }
+    //[ForgeLog d:[NSString stringWithFormat:@"facebook_RequestDelegate.didFailWithError: %@", error]];
+    [facebook_Util handleError:error task:task closeSession:false];
+    
 	// "release"
 	me = nil;
 	fb = nil;
 }
 
+
 - (void) request:(FBRequest *)request didLoad:(id)result {
 	[task success:result];
+    
 	// "release"
 	me = nil;
 	fb = nil;

@@ -12,6 +12,7 @@
 		71334C5216B7D86300F95C9D /* facebook_EventListener.m in Sources */ = {isa = PBXBuildFile; fileRef = 71334C4B16B7D86300F95C9D /* facebook_EventListener.m */; };
 		71334C5316B7D86300F95C9D /* facebook_RequestDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 71334C4D16B7D86300F95C9D /* facebook_RequestDelegate.m */; };
 		71334C5416B7D86300F95C9D /* facebook_Util.m in Sources */ = {isa = PBXBuildFile; fileRef = 71334C4F16B7D86300F95C9D /* facebook_Util.m */; };
+		718C907C18EAC2FB001E2FEC /* facebook_LoginDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 718C907B18EAC2FB001E2FEC /* facebook_LoginDelegate.m */; };
 		71DAEEED16B7DC87005832D8 /* FacebookSDK in Frameworks */ = {isa = PBXBuildFile; fileRef = 71DAEEEC16B7DC87005832D8 /* FacebookSDK */; };
 		B31B6D5215C13D5200854074 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B31B6D5115C13D5200854074 /* Foundation.framework */; };
 		B31B6D6F15C1467100854074 /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B31B6D6E15C1467100854074 /* CoreFoundation.framework */; };
@@ -60,6 +61,8 @@
 		71334C7216B7D87400F95C9D /* FBTestSession.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FBTestSession.h; sourceTree = "<group>"; };
 		71334C7316B7D87400F95C9D /* FBUserSettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FBUserSettingsViewController.h; sourceTree = "<group>"; };
 		71334C7416B7D87400F95C9D /* FBViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FBViewController.h; sourceTree = "<group>"; };
+		718C907A18EAC2FB001E2FEC /* facebook_LoginDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = facebook_LoginDelegate.h; sourceTree = "<group>"; };
+		718C907B18EAC2FB001E2FEC /* facebook_LoginDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = facebook_LoginDelegate.m; sourceTree = "<group>"; };
 		71DAEEEC16B7DC87005832D8 /* FacebookSDK */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = FacebookSDK; path = FacebookSDK.framework/FacebookSDK; sourceTree = "<group>"; };
 		71DAEEEF16B7DC92005832D8 /* FacebookSDK.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FacebookSDK.h; path = FacebookSDK.framework/Headers/FacebookSDK.h; sourceTree = "<group>"; };
 		71DAEEF016B7DC92005832D8 /* FBCacheDescriptor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FBCacheDescriptor.h; path = FacebookSDK.framework/Headers/FBCacheDescriptor.h; sourceTree = "<group>"; };
@@ -194,6 +197,8 @@
 				71334C4D16B7D86300F95C9D /* facebook_RequestDelegate.m */,
 				71334C4E16B7D86300F95C9D /* facebook_Util.h */,
 				71334C4F16B7D86300F95C9D /* facebook_Util.m */,
+				718C907A18EAC2FB001E2FEC /* facebook_LoginDelegate.h */,
+				718C907B18EAC2FB001E2FEC /* facebook_LoginDelegate.m */,
 			);
 			name = facebook;
 			sourceTree = "<group>";
@@ -385,6 +390,7 @@
 				71334C5016B7D86300F95C9D /* facebook_API.m in Sources */,
 				71334C5116B7D86300F95C9D /* facebook_DialogDelegate.m in Sources */,
 				71334C5216B7D86300F95C9D /* facebook_EventListener.m in Sources */,
+				718C907C18EAC2FB001E2FEC /* facebook_LoginDelegate.m in Sources */,
 				71334C5316B7D86300F95C9D /* facebook_RequestDelegate.m in Sources */,
 				71334C5416B7D86300F95C9D /* facebook_Util.m in Sources */,
 			);

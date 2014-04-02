@@ -17,5 +17,6 @@
 +(NSArray*)publishPermissionsInPermissions:(NSArray*)permissions;
 +(BOOL)permissionsAllowedByPermissions:(NSArray*)permissions requestedPermissions:(NSArray*)requestedPermissions;
 + (FBSessionDefaultAudience)lookupAudience:(NSString*)audience;
-
++ (void)handleError:(NSError *)error task:(ForgeTask*)task;
++ (void)handleError:(NSError *)error task:(ForgeTask*)task closeSession:(BOOL)closeSession;
 @end
