@@ -1,5 +1,5 @@
 {
-    "changes": "* Support error handling changes introduced with new iOS SDK\n* TODO", 
+    "changes": "* Support error handling changes introduced with new Facebook SDK\n* Update Facebook Login logic for new iOS SDK", 
     "description": "Access the Facebook SDK.\n\nThe facebook module allows access to native Facebook SDK features including SSO authentication through the Facebook app, Facebook share dialog access and Facebook graph API access.", 
     "min_platform_version": "v2.1.0", 
     "namespace": "facebook", 
