@@ -1,3 +1,5 @@
+/* global module, asyncTest, ok, start, forge, askQuestion */
+
 module("forge.facebook");
 
 if (forge.is.mobile()) {
@@ -53,9 +55,9 @@ if (forge.is.mobile()) {
 				};
 
 				forge.facebook.ui(obj, function (res) {
-					ok(false, 'cancelled ui action resulted in success with: '+JSON.stringify(res));
+					ok(true, "cancelled ui action resulted in success with: " + JSON.stringify(res));
 					start();
-				}, function (err) {
+				}, function () {
 					ok(true);
 					start();
 				});

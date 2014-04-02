@@ -1,13 +1,43 @@
+/* global module, asyncTest, ok, start, forge */
+
 module("forge.facebook");
-
-/*
-
-These tests shouldn't require interaction, but currently do.
 
 asyncTest("logout", 1, function () {
 	forge.facebook.logout(function () {
 		ok(true);
-		start()
+		start();
+	}, function () {
+		ok(false);
+		start();
+	});
+});
+
+var permissions = ["basic_info", "publish_actions"];
+
+asyncTest("hasAuthorized - logged out", 1, function () {
+	forge.facebook.hasAuthorized(permissions, function (auth) {
+		ok(false);
+		start();
+	}, function () {
+		ok(true);
+		start();
+	});
+});
+
+asyncTest("authorize", 1, function () {
+	forge.facebook.authorize(permissions, function () {
+		ok(true);
+		start();
+	}, function () {
+		ok(false);
+		start();
+	});
+});
+
+asyncTest("hasAuthorized - logged in", 1, function () {
+	forge.facebook.hasAuthorized(permissions, function (auth) {
+		ok(true);
+		start();
 	}, function () {
 		ok(false);
 		start();
@@ -15,26 +45,14 @@ asyncTest("logout", 1, function () {
 });
 
 asyncTest("attempt api call", 1, function () {
-	forge.facebook.api('me', function () {
-		ok(forge.is.android());
-		start()
-	}, function () {
-		ok(forge.is.ios());
-		start();
-	});
-});
-*/
-
-asyncTest("authorize", 1, function () {
-	forge.facebook.authorize(["publish_actions"], function () {
+	forge.facebook.api("/me", function () {
 		ok(true);
-		start()
+		start();
 	}, function () {
 		ok(false);
 		start();
 	});
 });
-
 
 var unique_id = Math.floor(Math.random() * 1000);
 
@@ -61,4 +79,5 @@ asyncTest("Post a duplicate update", 1, function () {
 		start();
 	});
 });
+
 
