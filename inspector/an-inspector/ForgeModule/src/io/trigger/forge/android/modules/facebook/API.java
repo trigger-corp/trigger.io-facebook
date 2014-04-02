@@ -191,7 +191,12 @@ public class API {
 		
 		getFacebookRunner(task).request(path, paramBundle, method, new AsyncFacebookRunner.RequestListener() {
 			public void onComplete(String response, Object state) {
-				task.success(new JsonParser().parse(response));
+				JsonElement ret = (new JsonParser().parse(response)); 
+				if (ret.getAsJsonObject().has("error")) { // seems like this is new w/ latest SDK - maybe no longer using deprecated methods will sort this out?
+					task.error(ret);
+				} else {
+					task.success();
+				}
 			}
 
 			public void onIOException(IOException e, Object state) {
