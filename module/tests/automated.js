@@ -15,7 +15,7 @@ asyncTest("logout", 1, function () {
 var permissions = ["basic_info", "publish_actions"];
 
 asyncTest("hasAuthorized - logged out", 1, function () {
-	forge.facebook.hasAuthorized(permissions, function (auth) {
+	forge.facebook.hasAuthorized(permissions, function () {
 		ok(false);
 		start();
 	}, function () {
@@ -25,8 +25,8 @@ asyncTest("hasAuthorized - logged out", 1, function () {
 });
 
 asyncTest("authorize", 1, function () {
-	forge.facebook.authorize(permissions, function () {
-		ok(true);
+	forge.facebook.authorize(permissions, function (auth) {
+		ok(auth !== null);
 		start();
 	}, function () {
 		ok(false);
@@ -36,7 +36,7 @@ asyncTest("authorize", 1, function () {
 
 asyncTest("hasAuthorized - logged in", 1, function () {
 	forge.facebook.hasAuthorized(permissions, function (auth) {
-		ok(true);
+		ok(auth !== null);
 		start();
 	}, function () {
 		ok(false);
@@ -45,8 +45,8 @@ asyncTest("hasAuthorized - logged in", 1, function () {
 });
 
 asyncTest("attempt api call", 1, function () {
-	forge.facebook.api("/me", function () {
-		ok(true);
+	forge.facebook.api("/me", function (data) {
+		ok(data !== null);
 		start();
 	}, function () {
 		ok(false);
@@ -59,8 +59,8 @@ var unique_id = Math.floor(Math.random() * 1000);
 asyncTest("Post an update", 1, function () {
 	forge.facebook.api("/me/feed", "POST", {
 		message: "forge.facebook.api automated test post: " + unique_id,
-    }, function () {
-		ok(true);
+    }, function (data) {
+		ok(data !== null);
 		start();
 	}, function () {
 		ok(false);

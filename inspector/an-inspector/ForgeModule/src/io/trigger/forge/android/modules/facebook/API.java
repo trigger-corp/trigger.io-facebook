@@ -193,9 +193,9 @@ public class API {
 			public void onComplete(String response, Object state) {
 				JsonElement ret = (new JsonParser().parse(response)); 
 				if (ret.getAsJsonObject().has("error")) { // seems like this is new w/ latest SDK - maybe no longer using deprecated methods will sort this out?
-					task.error(ret);
+					task.error(new JsonParser().parse(response));
 				} else {
-					task.success();
+					task.success(new JsonParser().parse(response));
 				}
 			}
 
