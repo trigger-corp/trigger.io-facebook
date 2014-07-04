@@ -17,6 +17,7 @@
         _permissions = newPermissions;
         _audience = newAudience;
         _loginUI = newLoginUI;
+        _invalidPermissions = false;
     }
     return self;
 }
@@ -31,18 +32,18 @@
     BOOL loggedinWithoutUI = false;
     
     if (FBSession.activeSession.state == FBSessionStateCreatedTokenLoaded) {
-        loggedinWithoutUI = [facebook_LoginDelegate openActiveSession:NO context:context];
+        loggedinWithoutUI = [self openActiveSession:NO context:context];
         if (!loggedinWithoutUI && context.loginUI) {
-            loggedinWithoutUI = [facebook_LoginDelegate openActiveSession:YES context:context];
+            loggedinWithoutUI = [self openActiveSession:YES context:context];
         } else if (!loggedinWithoutUI && !context.loginUI) {
             [context.task error:@"User not logged in or insufficient read permissions" type:@"EXPECTED_FAILURE" subtype:nil];
             return;
         }
     } else {
         if (context.loginUI) {
-            loggedinWithoutUI = [facebook_LoginDelegate openActiveSession:YES context:context];
+            loggedinWithoutUI = [self openActiveSession:YES context:context];
         } else {
-            loggedinWithoutUI = [facebook_LoginDelegate openActiveSession:NO context:context];
+            loggedinWithoutUI = [self openActiveSession:NO context:context];
             if (!loggedinWithoutUI) {
                 [context.task error:@"User not logged in or insufficient read permissions" type:@"EXPECTED_FAILURE" subtype:nil];
                 return;
@@ -57,25 +58,14 @@
     BOOL loggedinWithoutUI = [FBSession openActiveSessionWithReadPermissions:readPermissions
                                                                 allowLoginUI:allowLoginUI
                                                            completionHandler:^(FBSession *session, FBSessionState state, NSError *error) {
-                                                               [facebook_LoginDelegate sessionStateChanged:session state:state error:error context:context];
+                                                               [self sessionStateChanged:session state:state error:error context:context];
                                                            }];
     return loggedinWithoutUI;
 }
 
 
-+ (void)requestNewPublishPermissions:(FBSession*) session context:(LoginContext*)context {
-    NSArray *publishPermissions = [facebook_Util publishPermissionsInPermissions:context.permissions];
-    FBSessionDefaultAudience publishAudience = [facebook_Util lookupAudience:context.audience];
-    [session requestNewPublishPermissions:publishPermissions
-                          defaultAudience:publishAudience
-                        completionHandler:^(FBSession *session, NSError *error) {
-                            [facebook_LoginDelegate publishCompletionHandler:session error:error context:context];
-                        }];
-}
-
-
 + (void)sessionStateChanged:(FBSession *)session state:(FBSessionState) state error:(NSError *)error context:(LoginContext*)context {
-    //[ForgeLog d:[NSString stringWithFormat:@"facebook_Login.sessionStateChanged: %@ %@", [facebook_LoginDelegate ParseState:session.state], error ? error : @"SUCCESS"]];
+    //[ForgeLog d:[NSString stringWithFormat:@"facebook_Login.sessionStateChanged: %@ %@", [self ParseState:session.state], error ? error : @"SUCCESS"]];
     
     if (error) {
         return [facebook_Util handleError:error task:context.task];
@@ -84,12 +74,14 @@
     switch (state) {
         case FBSessionStateOpen:
         case FBSessionStateOpenTokenExtended:
-            if (![facebook_LoginDelegate checkPublishPermissions:context]) {
+            if (context.invalidPermissions) {
+                [context.task error:[NSString stringWithFormat:@"Failed to request permissions: '%@'", [[facebook_Util publishPermissionsInPermissions:context.permissions] componentsJoinedByString:@", "]]];
+            } else if (![self checkPublishPermissions:context]) {
                 dispatch_async(dispatch_get_main_queue(), ^(void) {
-                    [facebook_LoginDelegate requestNewPublishPermissions:session context:context];
+                    [self requestNewPublishPermissions:session context:context];
                 });
             } else {
-                [context.task success:[facebook_LoginDelegate AccessToken:FBSession.activeSession]];
+                [context.task success:[self AccessToken:FBSession.activeSession]];
             }
             break;
         case FBSessionStateClosed:
@@ -100,22 +92,36 @@
             [context.task error:@"Login failed" type:@"EXPECTED_FAILURE" subtype:nil];
             break;
         default:
-            [context.task error:[NSString stringWithFormat:@"Unknown error: %@", [facebook_LoginDelegate ParseState:session.state]] type:@"UNEXPECTED_FAILURE" subtype:nil];
+            [context.task error:[NSString stringWithFormat:@"Unknown error: %@", [self ParseState:session.state]] type:@"UNEXPECTED_FAILURE" subtype:nil];
             break;
     }
 }
 
 
-
-+ (void)publishCompletionHandler:(FBSession *)session error:(NSError *)error context:(LoginContext*)context {
-    //[ForgeLog d:[NSString stringWithFormat:@"facebook_Login.publishCompletionHandler: %@ %@", [facebook_LoginDelegate ParseState:session.state], error ? error : @"SUCCESS"]];
-    if (error) {
-        return [facebook_Util handleError:error task:context.task];
-    }
-    [context.task success:[facebook_LoginDelegate AccessToken:FBSession.activeSession]];
++ (void)requestNewPublishPermissions:(FBSession*) session context:(LoginContext*)context {
+    NSArray *publishPermissions = [facebook_Util publishPermissionsInPermissions:context.permissions];
+    FBSessionDefaultAudience publishAudience = [facebook_Util lookupAudience:context.audience];
+    [session requestNewPublishPermissions:publishPermissions
+                          defaultAudience:publishAudience
+                        completionHandler:^(FBSession *session, NSError *error) {
+                            if (![self checkPublishPermissions:context]) {
+                                [ForgeLog d:[NSString stringWithFormat:@"Failed to request permissions: '%@'", [publishPermissions componentsJoinedByString:@", "]]];
+                                context.invalidPermissions = true;
+                            } else {
+                                context.invalidPermissions = false;
+                                [self publishCompletionHandler:session error:error context:context];
+                            }
+                        }];
 }
 
 
++ (void)publishCompletionHandler:(FBSession *)session error:(NSError *)error context:(LoginContext*)context {
+    //[ForgeLog d:[NSString stringWithFormat:@"facebook_Login.publishCompletionHandler: %@ %@", [self ParseState:session.state], error ? error : @"SUCCESS"]];
+    if (error) {
+        return [facebook_Util handleError:error task:context.task];
+    }
+    [context.task success:[self AccessToken:FBSession.activeSession]];
+}
 
 + (BOOL)checkPublishPermissions:(LoginContext*)context {
     return [facebook_Util permissionsAllowedByPermissions:FBSession.activeSession.permissions requestedPermissions:context.permissions];
