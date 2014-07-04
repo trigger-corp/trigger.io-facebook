@@ -138,7 +138,11 @@ public class API {
 						}
 
 						public void onFacebookError(FacebookError error) {
-							task.error(error.getLocalizedMessage(), "EXPECTED_FAILURE", null);
+							JsonObject result = new JsonObject();
+							result.addProperty("message", error.getLocalizedMessage());
+							result.addProperty("type", error.getErrorType());
+							result.addProperty("code", error.getErrorCode());
+							task.error(result);
 						}
 
 						public void onError(DialogError e) {
@@ -179,7 +183,11 @@ public class API {
 			}
 
 			public void onFacebookError(FacebookError error, Object state) {
-				task.error(error.getLocalizedMessage(), "EXPECTED_FAILURE", null);
+				JsonObject result = new JsonObject();
+				result.addProperty("message", error.getLocalizedMessage());
+				result.addProperty("type", error.getErrorType());
+				result.addProperty("code", error.getErrorCode());
+				task.error(result);
 			}
 		});
 	}
@@ -199,10 +207,14 @@ public class API {
 					public void onCompleted(Response response) {
 						FacebookRequestError error = response.getError();
 						if (error != null) {
-							task.error(error.getException()); // TODO
+							JsonObject result = new JsonObject();
+							result.addProperty("message", error.getErrorMessage());
+							result.addProperty("type", error.getErrorType());
+							result.addProperty("code", error.getErrorCode());
+							task.error(result);
 						} else {
-							JsonElement ret = (new JsonParser().parse(response.getRawResponse()));
-							task.success(ret);
+							JsonElement result = (new JsonParser().parse(response.getRawResponse()));
+							task.success(result);
 						}
 					}
 				};
@@ -244,7 +256,11 @@ public class API {
 					}
 
 					public void onFacebookError(FacebookError error) {
-						task.error(error.getLocalizedMessage(), "EXPECTED_FAILURE", null);
+						JsonObject result = new JsonObject();
+						result.addProperty("message", error.getLocalizedMessage());
+						result.addProperty("type", error.getErrorType());
+						result.addProperty("code", error.getErrorCode());
+						task.error(result);
 					}
 
 					public void onError(DialogError e) {
