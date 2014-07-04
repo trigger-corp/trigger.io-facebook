@@ -12,7 +12,8 @@ asyncTest("logout", 1, function () {
 	});
 });
 
-var permissions = ["basic_info", "publish_actions"];
+// NB: Safe permissions are: ["public_profile", "email", "user_friends"];
+var permissions = ["public_profile", "email", "user_friends", "publish_actions"];
 
 asyncTest("hasAuthorized - logged out", 1, function () {
 	forge.facebook.hasAuthorized(permissions, function () {

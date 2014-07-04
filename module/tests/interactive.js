@@ -2,9 +2,31 @@
 
 module("forge.facebook");
 
+// NB: Safe permissions are: ["public_profile", "email", "user_friends"];
+var permissions = ["public_profile", "email", "user_friends", "publish_actions"];
+
 if (forge.is.mobile()) {
 	asyncTest("authorize", 1, function () {
-		forge.facebook.authorize(function () {
+		forge.facebook.authorize(permissions, function () {
+			ok(true);
+			start();
+		}, function () {
+			ok(false);
+			start();
+		});
+	});
+
+	asyncTest("check permissions", 1, function () {
+		forge.facebook.api('/me/permissions', function (data) {
+			/* Looks like this:
+			{ "data": [ {"status":"granted","permission":"installed"},
+						{"status":"granted","permission":"public_profile"},
+						{"status":"granted","permission":"email"},
+						{"status":"granted","permission":"publish_actions"},
+						{"status":"granted","permission":"user_birthday"},
+						{"status":"granted","permission":"user_location"},
+						{"status":"granted","permission":"user_friends"} ]} */
+			forge.logging.log("Permissions: " + JSON.stringify(data));
 			ok(true);
 			start();
 		}, function () {

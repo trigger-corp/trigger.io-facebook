@@ -10,6 +10,15 @@ forge['facebook'] = {
 			success = audience;
 			audience = undefined;
 		}
+
+		// check permissions
+		var unknown = permissions.filter(function (permission) {
+			return forge.facebook.permissions.indexOf(permission) === -1;
+		});
+		if (unknown.length) {
+			forge.logging.error("You have specified one or more unknown Facebook permissions: " + unknown.join(", "));
+		}
+
 		forge.internal.call("facebook.authorize", {
 			permissions: permissions,
 			audience: audience,
@@ -27,6 +36,15 @@ forge['facebook'] = {
 			success = audience;
 			audience = undefined;
 		}
+
+		// check permissions
+		var unknown = permissions.filter(function (permission) {
+			return forge.facebook.permissions.indexOf(permission) === -1;
+		});
+		if (unknown.length) {
+			forge.logging.error("You have specified one or more unknown Facebook permissions: " + unknown.join(", "));
+		}
+
 		forge.internal.call("facebook.authorize", {
 			permissions: permissions,
 			audience: audience,
@@ -90,5 +108,31 @@ forge['facebook'] = {
 				success(convertQSArrayToJSArray(resp));
 			}
 		}, error);
-	}
+	},
+	/**
+	 * Known valid permissions
+	 * From: https://developers.facebook.com/docs/facebook-login/permissions/v2.0#reference
+	 *
+	 * auth methods check against this list and warn if requested permission is
+	 * not present
+	 */
+	'permissions': [
+		// these permissions won't require that your app be reviewed by facebook
+		"public_profile", "user_friends", "email",
+		// extended profile properties
+		"user_about_me", "user_activities", "user_birthday", "user_education_history",
+		"user_events", "user_groups", "user_hometown", "user_interests", "user_likes",
+		"user_location", "user_photos", "user_relationships", "user_relationship_details",
+		"user_religion_politics", "user_status", "user_tagged_places", "user_videos",
+		"user_website", "user_work_history",
+		// extended permissions
+		"read_friendlists", "read_insights", "read_mailbox", "read_stream",
+		// extended permissions - Publish
+		/*"create_event", ??? */ "manage_notifications", "publish_actions", "rsvp_event",
+		// open graph permissions
+		/*"publish_actions",*/ "user_actions.books", "user_actions.fitness", "user_actions.music",
+		"user_actions.news", "user_actions.video", /*"user_actions.APP_NAMESPACE",*/
+		// pages
+		"manage_pages", "read_page_mailboxes"
+	]
 };
