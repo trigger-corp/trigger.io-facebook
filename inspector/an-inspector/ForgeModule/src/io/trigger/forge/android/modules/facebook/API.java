@@ -20,7 +20,10 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 
+import android.app.Application;
 import android.content.SharedPreferences;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 
 import com.facebook.android.AsyncFacebookRunner;
@@ -262,5 +265,18 @@ public class API {
 				}
 			}
 		});
+	}
+	
+	public static void installed(final ForgeTask task) {
+		try {
+		    ForgeApp.getActivity().getPackageManager().getApplicationInfo("com.facebook.katana", 0);
+		} catch (PackageManager.NameNotFoundException e ){
+		    task.success(false);
+		    return;
+		} catch (Exception e) {
+			task.error(e.getLocalizedMessage(), "UNEXPECTED_FAILURE", null);
+			return;
+		}
+		task.success(true);
 	}
 }
