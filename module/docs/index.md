@@ -19,7 +19,7 @@ App ID
 ##API
 
 !method: forge.facebook.authorize([permissions], [audience], success, error)
-!param: permissions `array` an optional array of permissions to requst
+!param: permissions `array` an optional array of permissions to request ([Facebook SDK Documentation](https://developers.facebook.com/docs/facebook-login/permissions/v2.0#reference))
 !param: audience `string` an optional string indicating who should see updates by default (iOS only)
 !param: success `function(token_information)` callback to be invoked when no errors occur
 !description: Authorize the current user with Facebook. May show a login UI if new permissions are required, or a valid login token is not available (i.e. on first login).
