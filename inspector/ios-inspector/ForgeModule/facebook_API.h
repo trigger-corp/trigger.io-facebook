@@ -14,5 +14,6 @@
 + (void)logout:(ForgeTask*)task;
 + (void)api:(ForgeTask*)task path:(NSString*)path method:(NSString*)method params:(NSDictionary*)params;
 + (void)ui:(ForgeTask*)task;
++ (void)installed:(ForgeTask*)task;
 
 @end

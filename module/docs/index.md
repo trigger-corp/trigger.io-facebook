@@ -59,13 +59,19 @@ The ``audience`` parameter is only used on iOS (due to differences in the Facebo
 !param: error `function(content)` called with details of any error which may occur
 
 !method: forge.facebook.ui(params, success, error)
-!param: params `object`  dictionary of paramters, must include "method"
+!param: params `object`  dictionary of parameters, must include "method"
 !param: success `function(response)` callback to be invoked when no errors occur
 !description: Display a Facebook dialog UI. See [https://developers.facebook.com/docs/reference/javascript/FB.ui/](https://developers.facebook.com/docs/reference/javascript/FB.ui/) for further details.
 !platforms: iOS, Android
 !param: error `function(content)` called with details of any error which may occur
 
 > ::Note:: if the user hits "Cancel" in the dialog, your success callback will still be called - with ``{}`` as its parameter. This is the behaviour of the underlying Facebook SDK - for more information, see [http://stackoverflow.com/a/13729707/29903](http://stackoverflow.com/a/13729707/29903).
+
+!method: forge.facebook.installed(success, error)
+!param: success `function(installed)` callback to be invoked when no errors occur
+!description: Check if the Facebook App is installed on the device.
+!platforms: iOS, Android
+!param: error `function(content)` called with details of any error which may occur
 
 ##Tips
 

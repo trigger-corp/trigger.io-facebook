@@ -6,6 +6,30 @@ module("forge.facebook");
 var permissions = ["public_profile", "email", "user_friends", "publish_actions"];
 
 if (forge.is.mobile()) {
+
+	asyncTest("Check if Facebook App is installed", 1, function () {
+		askQuestion("Is the Facebook App installed on this device?", {
+			Yes: function () {
+				forge.facebook.installed(function (installed) {
+					ok(installed === true);
+					start();
+				}, function (e) {
+					ok(false, JSON.stringify(e));
+					start();
+				});
+			},
+			No: function () {
+				forge.facebook.installed(function (installed) {
+					ok(installed === false);
+					start();
+				}, function (e) {
+					ok(false, JSON.stringify(e));
+					start();
+				});
+			}
+		});
+	});
+
 	asyncTest("authorize", 1, function () {
 		forge.facebook.authorize(permissions, function () {
 			ok(true);

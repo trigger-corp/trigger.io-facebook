@@ -25,7 +25,7 @@
 
 /* Begin PBXFileReference section */
 		71334C4616B7D86300F95C9D /* facebook_API.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = facebook_API.h; sourceTree = "<group>"; };
-		71334C4716B7D86300F95C9D /* facebook_API.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = facebook_API.m; sourceTree = "<group>"; };
+		71334C4716B7D86300F95C9D /* facebook_API.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = facebook_API.m; sourceTree = "<group>"; usesTabs = 1; };
 		71334C4816B7D86300F95C9D /* facebook_DialogDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = facebook_DialogDelegate.h; sourceTree = "<group>"; };
 		71334C4916B7D86300F95C9D /* facebook_DialogDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = facebook_DialogDelegate.m; sourceTree = "<group>"; };
 		71334C4A16B7D86300F95C9D /* facebook_EventListener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = facebook_EventListener.h; sourceTree = "<group>"; };

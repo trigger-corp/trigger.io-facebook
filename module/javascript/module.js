@@ -109,6 +109,9 @@ forge['facebook'] = {
 			}
 		}, error);
 	},
+	'installed': function (success, error) {
+		forge.internal.call("facebook.installed", {}, success, error);
+	},
 	/**
 	 * Known valid permissions
 	 * From: https://developers.facebook.com/docs/facebook-login/permissions/v2.0#reference

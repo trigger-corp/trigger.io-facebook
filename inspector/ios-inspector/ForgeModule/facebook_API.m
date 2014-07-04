@@ -95,4 +95,22 @@
 	[facebook dialog:method andParams:paramsDict andDelegate:delegate];
 }
 
++ (void)installed:(ForgeTask*)task {
+    // see approach below if we're getting false positives
+    if ([[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"fb://profile"]]) {
+		[task success:[NSNumber numberWithBool:true]];
+	} else {
+		[task success:[NSNumber numberWithBool:false]];
+	}
+	/*
+	FBLinkShareParams *params = [[FBLinkShareParams alloc] init];
+	params.link = [NSURL URLWithString:@"https://trigger.io"];
+	if ([FBDialogs canPresentShareDialogWithParams:params]) {
+		[task success:[NSNumber numberWithBool:YES]];
+	} else {
+		[task success:[NSNumber numberWithBool:NO]];
+	}
+	*/
+}
+
 @end
