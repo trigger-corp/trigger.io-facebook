@@ -58,22 +58,21 @@ static BOOL partnerProgramNotified = NO;
     static NSArray *_publishPermissions;
     static dispatch_once_t t;
     dispatch_once(&t, ^{
-        _publishPermissions = @[@"ads_management", @"create_event", @"rsvp_event", @"manage_friendlists", @"manage_notifications", @"manage_pages", @"publish_actions", @"publish_stream"];
+        _publishPermissions = @[@"ads_management", @"create_event", @"rsvp_event", @"manage_friendlists", @"manage_notifications", @"manage_pages", @"publish_actions"];
     });
     return _publishPermissions;
 }
 
 +(NSArray*)readPermissionsInPermissions:(NSArray*)permissions {
-    NSArray *publishPermissions = @[@"ads_management", @"create_event", @"rsvp_event", @"manage_friendlists", @"manage_notifications", @"manage_pages", @"publish_actions", @"publish_stream"];
+    NSArray *publishPermissions = @[@"ads_management", @"create_event", @"rsvp_event", @"manage_friendlists", @"manage_notifications", @"manage_pages", @"publish_actions"];
 	NSIndexSet *publishIndexes = [permissions indexesOfObjectsPassingTest:^BOOL(NSString *permission, NSUInteger idx, BOOL *stop) {
-		//return ![[[self class] publishPermissions] containsObject:permission];
 		return ![publishPermissions containsObject:permission];
 	}];
 	return [permissions objectsAtIndexes:publishIndexes];
 }
 
 +(NSArray*)publishPermissionsInPermissions:(NSArray*)permissions {
-    NSArray *publishPermissions = @[@"ads_management", @"create_event", @"rsvp_event", @"manage_friendlists", @"manage_notifications", @"manage_pages", @"publish_actions", @"publish_stream"];
+    NSArray *publishPermissions = @[@"ads_management", @"create_event", @"rsvp_event", @"manage_friendlists", @"manage_notifications", @"manage_pages", @"publish_actions"];
 	NSIndexSet *publishIndexes = [permissions indexesOfObjectsPassingTest:^BOOL(NSString *permission, NSUInteger idx, BOOL *stop) {
 		return [publishPermissions containsObject:permission];
 	}];
@@ -86,6 +85,7 @@ static BOOL partnerProgramNotified = NO;
 		if ([permissions indexOfObject:permission] == NSNotFound) {
 			result = NO;
 			stop = YES;
+            [ForgeLog d:[NSString stringWithFormat:@"Requesting Facebook permission: %@", permission]];
 		}
 	}];
 	return result;
