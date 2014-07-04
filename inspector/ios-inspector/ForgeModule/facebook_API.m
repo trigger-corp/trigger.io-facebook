@@ -57,17 +57,14 @@
 
 + (void)api:(ForgeTask*)task path:(NSString*)path method:(NSString*)method params:(NSDictionary*)params {
 	[facebook_Util partnerProgram];
-	
-	Facebook* facebook = [[Facebook alloc]
-					 initWithAppId:FBSession.activeSession.appID
-					 andDelegate:nil];
-	
-	facebook.accessToken = FBSession.activeSession.accessTokenData.accessToken;
-	facebook.expirationDate = FBSession.activeSession.accessTokenData.expirationDate;
-	
-	facebook_RequestDelegate *delegate = [[facebook_RequestDelegate alloc] initWithTask:task andFacebook:facebook];
-	
-	[facebook requestWithGraphPath:path andParams:[NSMutableDictionary dictionaryWithDictionary:params] andHttpMethod:method andDelegate:delegate];
+    
+    [FBRequestConnection startWithGraphPath:path parameters:params HTTPMethod:method completionHandler:^(FBRequestConnection *connection, id result, NSError *error) {
+        if (!error) {
+            [task success:result];
+        } else {
+            [facebook_Util handleError:error task:task closeSession:false];
+        }
+    }];
 }
 
 
@@ -92,13 +89,10 @@
 	Facebook* facebook = [[Facebook alloc]
 						  initWithAppId:FBSession.activeSession.appID
 						  andDelegate:nil];
-	
 	facebook.accessToken = FBSession.activeSession.accessTokenData.accessToken;
 	facebook.expirationDate = FBSession.activeSession.accessTokenData.expirationDate;
-	
 	facebook_DialogDelegate *delegate = [[facebook_DialogDelegate alloc] initWithTask:task andFacebook:facebook];
-	
-	[facebook dialog:method andParams:paramsDict andDelegate:delegate];	
+	[facebook dialog:method andParams:paramsDict andDelegate:delegate];
 }
 
 @end
