@@ -20,12 +20,15 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 
-import android.app.Application;
 import android.content.SharedPreferences;
-import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 
+import com.facebook.FacebookRequestError;
+import com.facebook.HttpMethod;
+import com.facebook.Request;
+import com.facebook.RequestAsyncTask;
+import com.facebook.Response;
 import com.facebook.android.AsyncFacebookRunner;
 import com.facebook.android.DialogError;
 import com.facebook.android.Facebook;
@@ -98,7 +101,6 @@ public class API {
 	public static void authorize(final ForgeTask task, @ForgeParam("permissions") final JsonArray permissionsJSON, @ForgeParam("dialog") final boolean dialog) {
 		partnerProgram(task);
 
-		final String fpermissionsJSON = permissionsJSON.toString();
 		final String[] permissions = new String[permissionsJSON.size()];
 		for (int i = 0; i < permissionsJSON.size(); i++) {
 			permissions[i] = permissionsJSON.get(i).getAsString();
@@ -184,40 +186,30 @@ public class API {
 
 	public static void api(final ForgeTask task, @ForgeParam("params") final JsonObject params, @ForgeParam("path") final String path, @ForgeParam("method") final String method) {
 		partnerProgram(task);
-
-		Bundle paramBundle = new Bundle();
-		
+		final Bundle paramBundle = new Bundle();
 		for (Entry<String, JsonElement> entry : params.entrySet()) {
 			String key = entry.getKey();
 			paramBundle.putString(key, entry.getValue().getAsString());
 		}
 		
-		getFacebookRunner(task).request(path, paramBundle, method, new AsyncFacebookRunner.RequestListener() {
-			public void onComplete(String response, Object state) {
-				JsonElement ret = (new JsonParser().parse(response)); 
-				if (ret.getAsJsonObject().has("error")) { // seems like this is new w/ latest SDK - maybe no longer using deprecated methods will sort this out?
-					task.error(new JsonParser().parse(response));
-				} else {
-					task.success(new JsonParser().parse(response));
-				}
+		task.performUI(new Runnable() {
+			@Override
+			public void run() {
+				Request.Callback callback = new Request.Callback() {
+					public void onCompleted(Response response) {
+						FacebookRequestError error = response.getError();
+						if (error != null) {
+							task.error(error.getException()); // TODO
+						} else {
+							JsonElement ret = (new JsonParser().parse(response.getRawResponse()));
+							task.success(ret);
+						}
+					}
+				};
+				Request request = new Request(getFacebook(task).getSession(), path, paramBundle, HttpMethod.valueOf(method.toUpperCase()), callback);
+				(new RequestAsyncTask(request)).execute();
 			}
-
-			public void onIOException(IOException e, Object state) {
-				task.error(e);
-			}
-
-			public void onFileNotFoundException(FileNotFoundException e, Object state) {
-				task.error(e);
-			}
-
-			public void onMalformedURLException(MalformedURLException e, Object state) {
-				task.error(e);
-			}
-
-			public void onFacebookError(FacebookError error, Object state) {
-				task.error(error.getLocalizedMessage(), "EXPECTED_FAILURE", null);
-			}
-		}, null);
+		});
 	}
 
 	public static void ui(final ForgeTask task) {
@@ -227,7 +219,6 @@ public class API {
 			public void run() {
 				String method = null;
 				Bundle paramBundle = new Bundle();
-				
 				for (Entry<String, JsonElement> entry : task.params.entrySet()) {
 					String key = entry.getKey();
 					if (key.equals("method")) {
@@ -238,31 +229,32 @@ public class API {
 				}
 				if (method == null) {
 					task.error("'method' is required for ui", "BAD_INPUT", null);
-				} else {
-					getFacebook(task).dialog(ForgeApp.getActivity(), method, paramBundle, new DialogListener() {
-						public void onComplete(Bundle values) {
-							JsonObject params = new JsonObject();
-							Iterator<?> keys = values.keySet().iterator();
-							while (keys.hasNext()) {
-								String key = (String) keys.next();
-								params.addProperty(key, (String) values.get(key));
-							}
-							task.success(params);
-						}
-
-						public void onFacebookError(FacebookError error) {
-							task.error(error.getLocalizedMessage(), "EXPECTED_FAILURE", null);
-						}
-
-						public void onError(DialogError e) {
-							task.error(e);
-						}
-
-						public void onCancel() {
-							task.error("User cancelled", "EXPECTED_FAILURE", null);
-						}
-					});
+					return;
 				}
+
+				getFacebook(task).dialog(ForgeApp.getActivity(), method, paramBundle, new DialogListener() {
+					public void onComplete(Bundle values) {
+						JsonObject params = new JsonObject();
+						Iterator<?> keys = values.keySet().iterator();
+						while (keys.hasNext()) {
+							String key = (String) keys.next();
+							params.addProperty(key, (String) values.get(key));
+						}
+						task.success(params);
+					}
+
+					public void onFacebookError(FacebookError error) {
+						task.error(error.getLocalizedMessage(), "EXPECTED_FAILURE", null);
+					}
+
+					public void onError(DialogError e) {
+						task.error(e);
+					}
+
+					public void onCancel() {
+						task.error("User cancelled", "EXPECTED_FAILURE", null);
+					}
+				});
 			}
 		});
 	}
