@@ -104,22 +104,24 @@
 
 
 + (void)requestNewPublishPermissions:(FBSession*) session context:(LoginContext*)context {
+    
     NSArray *publishPermissions = [facebook_Util publishPermissionsInPermissions:context.permissions];
     FBSessionDefaultAudience publishAudience = [facebook_Util lookupAudience:context.audience];
-    [session requestNewPublishPermissions:publishPermissions
-                          defaultAudience:publishAudience
-                        completionHandler:^(FBSession *session, NSError *error) {
-                            
-                            [ForgeLog d:[NSString stringWithFormat:@"facebook_Login.requestNewPublishPermissions: %@ %@ -> %@ -> %@ -> %@", [self ParseState:session.state], error ? error : @"SUCCESS", context.permissions, session.permissions, FBSession.activeSession.permissions]];
-                            
-                            if (![self checkPublishPermissions:context]) {
-                                [ForgeLog d:[NSString stringWithFormat:@"Failed to request permissions: '%@'", [publishPermissions componentsJoinedByString:@", "]]];
-                                context.invalidPublishPermissions = true;
-                            } else {
-                                context.invalidPublishPermissions = false;
-                                //[self publishCompletionHandler:session error:error context:context];
-                            }
-                        }];
+    
+    [session requestNewPublishPermissions:publishPermissions defaultAudience:publishAudience completionHandler:^(FBSession *session, NSError *error) {
+        
+        [ForgeLog d:[NSString stringWithFormat:@"facebook_Login.requestNewPublishPermissions: %@ %@ -> %@ -> %@ -> %@", [self ParseState:session.state], error ? error : @"SUCCESS", context.permissions, session.permissions, FBSession.activeSession.permissions]];
+        
+        // TODO failing here on iOS 8 with: com.facebook.sdk:ErrorReauthorizeFailedReasonUserCancelled
+        
+        if (![self checkPublishPermissions:context]) {
+            [ForgeLog d:[NSString stringWithFormat:@"Failed to request permissions: '%@'", [publishPermissions componentsJoinedByString:@", "]]];
+            context.invalidPublishPermissions = true;
+        } else {
+            context.invalidPublishPermissions = false;
+            //[self publishCompletionHandler:session error:error context:context];
+        }
+    }];
 }
 
 
