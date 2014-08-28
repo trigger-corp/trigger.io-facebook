@@ -12,10 +12,10 @@
 @interface facebook_Util : NSObject
 
 + (void) partnerProgram;
-+ (BOOL)permissionsRequirePublish:(NSArray*)permissions;
 +(NSArray*)readPermissionsInPermissions:(NSArray*)permissions;
 +(NSArray*)publishPermissionsInPermissions:(NSArray*)permissions;
 +(BOOL)permissionsAllowedByPermissions:(NSArray*)permissions requestedPermissions:(NSArray*)requestedPermissions;
++(NSArray*)missingPermissionsInGrantedPermissions:(NSArray*)grantedPermissions requestedPermissions:(NSArray*)requestedPermissions;
 + (FBSessionDefaultAudience)lookupAudience:(NSString*)audience;
 + (void)handleError:(NSError *)error task:(ForgeTask*)task;
 + (void)handleError:(NSError *)error task:(ForgeTask*)task closeSession:(BOOL)closeSession;

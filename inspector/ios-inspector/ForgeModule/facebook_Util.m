@@ -48,36 +48,37 @@ static BOOL partnerProgramNotified = NO;
 
 }
 
-+ (BOOL)permissionsRequirePublish:(NSArray*)permissions {
-	return [[facebook_Util publishPermissionsInPermissions:permissions] count] > 0;
-}
 
-+ (NSArray *)OldpublishPermissions {
-    // Currently documented at https://developers.facebook.com/docs/howtos/ios-6/
-    // Also see: https://developers.facebook.com/docs/facebook-login/permissions/
+/**
+ * From: From: https://developers.facebook.com/docs/facebook-login/permissions/v2.0#reference
+ */
++ (NSArray *)publishPermissions {
     static NSArray *_publishPermissions;
-    static dispatch_once_t t;
-    dispatch_once(&t, ^{
+    static dispatch_once_t _publishPermissionsOnce;
+    dispatch_once(&_publishPermissionsOnce, ^{
         _publishPermissions = @[@"ads_management", @"create_event", @"rsvp_event", @"manage_friendlists", @"manage_notifications", @"manage_pages", @"publish_actions"];
     });
     return _publishPermissions;
 }
 
+
 +(NSArray*)readPermissionsInPermissions:(NSArray*)permissions {
-    NSArray *publishPermissions = @[@"ads_management", @"create_event", @"rsvp_event", @"manage_friendlists", @"manage_notifications", @"manage_pages", @"publish_actions"];
+    NSArray *publishPermissions = [[self class] publishPermissions];
 	NSIndexSet *publishIndexes = [permissions indexesOfObjectsPassingTest:^BOOL(NSString *permission, NSUInteger idx, BOOL *stop) {
 		return ![publishPermissions containsObject:permission];
 	}];
 	return [permissions objectsAtIndexes:publishIndexes];
 }
 
+
 +(NSArray*)publishPermissionsInPermissions:(NSArray*)permissions {
-    NSArray *publishPermissions = @[@"ads_management", @"create_event", @"rsvp_event", @"manage_friendlists", @"manage_notifications", @"manage_pages", @"publish_actions"];
+    NSArray *publishPermissions = [[self class] publishPermissions];
 	NSIndexSet *publishIndexes = [permissions indexesOfObjectsPassingTest:^BOOL(NSString *permission, NSUInteger idx, BOOL *stop) {
 		return [publishPermissions containsObject:permission];
 	}];
 	return [permissions objectsAtIndexes:publishIndexes];
 }
+
 
 +(BOOL)permissionsAllowedByPermissions:(NSArray*)permissions requestedPermissions:(NSArray*)requestedPermissions {
 	__block BOOL result = YES;
@@ -85,11 +86,20 @@ static BOOL partnerProgramNotified = NO;
 		if ([permissions indexOfObject:permission] == NSNotFound) {
 			result = NO;
 			*stop = YES;
-            [ForgeLog d:[NSString stringWithFormat:@"Requesting Facebook permission: %@", permission]];
+            [ForgeLog d:[NSString stringWithFormat:@"Require Facebook permission: %@", permission]];
 		}
 	}];
 	return result;
 }
+
+
++(NSArray*)missingPermissionsInGrantedPermissions:(NSArray*)grantedPermissions requestedPermissions:(NSArray*)requestedPermissions {
+    NSIndexSet *missingIndices = [requestedPermissions indexesOfObjectsPassingTest:^BOOL(NSString *permission, NSUInteger idx, BOOL *stop) {
+        return ![grantedPermissions containsObject:permission];
+    }];
+    return [requestedPermissions objectsAtIndexes:missingIndices];
+}
+
 
 + (FBSessionDefaultAudience)lookupAudience:(NSString*)audience {
 	if ([@"everyone" isEqualToString:audience]) {
@@ -145,7 +155,7 @@ static BOOL partnerProgramNotified = NO;
     
     if ([err isKindOfClass:[NSDictionary class]]) {
         // sanity
-    } else if (![err respondsToSelector:@selector(objectForKey)] && [err isKindOfClass:[NSArray class]]) {
+    } else if (![err respondsToSelector:NSSelectorFromString(@"objectForKey:")] && [err isKindOfClass:[NSArray class]]) {
         err = [err objectAtIndex:0];
     } else {
         [ForgeLog d:@"ParseFacebookError: Couldn't parse com.facebook.sdk:ParsedJSONResponseKey"];

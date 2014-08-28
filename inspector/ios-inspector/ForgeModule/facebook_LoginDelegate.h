@@ -15,7 +15,6 @@
 @property NSArray *permissions;
 @property NSString *audience;
 @property BOOL loginUI;
-@property BOOL invalidPublishPermissions;
 @property BOOL isRequestingPublishPermissions;
 - (LoginContext*) initWithTask:(ForgeTask*)newTask permissions:(NSArray*)newPermissions audience:(NSString*)newAudience loginUI:(BOOL)newLoginUI;
 @end
@@ -25,6 +24,7 @@
 + (void) handleLogin:(LoginContext*)context;
 + (void) requestNewPublishPermissions:(FBSession *)session context:(LoginContext*)context;
 + (void) sessionStateChanged:(FBSession *)session state:(FBSessionState) state error:(NSError *)error context:(LoginContext*)context;
++ (BOOL) checkReadPermissions:(LoginContext*)context;
 + (BOOL) checkPublishPermissions:(LoginContext*)context;
 + (NSDictionary*) AccessToken:(FBSession*)session;
 + (NSString*) ParseState:(FBSessionState)state;
