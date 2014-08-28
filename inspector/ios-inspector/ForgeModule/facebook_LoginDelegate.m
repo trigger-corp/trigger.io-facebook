@@ -17,7 +17,8 @@
         _permissions = newPermissions;
         _audience = newAudience;
         _loginUI = newLoginUI;
-        _invalidPermissions = false;
+        _invalidPublishPermissions = false;
+        _isRequestingPublishPermissions = false;
     }
     return self;
 }
@@ -65,7 +66,7 @@
 
 
 + (void)sessionStateChanged:(FBSession *)session state:(FBSessionState) state error:(NSError *)error context:(LoginContext*)context {
-    //[ForgeLog d:[NSString stringWithFormat:@"facebook_Login.sessionStateChanged: %@ %@", [self ParseState:session.state], error ? error : @"SUCCESS"]];
+    [ForgeLog d:[NSString stringWithFormat:@"facebook_Login.sessionStateChanged: %@ %@ -> %@ -> %@ -> %@", [self ParseState:session.state], error ? error : @"SUCCESS", context.permissions, session.permissions, FBSession.activeSession.permissions]];
     
     if (error) {
         return [facebook_Util handleError:error task:context.task];
@@ -74,10 +75,14 @@
     switch (state) {
         case FBSessionStateOpen:
         case FBSessionStateOpenTokenExtended:
-            if (context.invalidPermissions) {
+
+            if (context.invalidPublishPermissions) {  // TODO check that we have the requested read permissions
                 [context.task error:[NSString stringWithFormat:@"Failed to request permissions: '%@'", [[facebook_Util publishPermissionsInPermissions:context.permissions] componentsJoinedByString:@", "]]];
-            } else if (![self checkPublishPermissions:context]) {
-                dispatch_async(dispatch_get_main_queue(), ^(void) {
+                
+            } else if (!context.isRequestingPublishPermissions && ![self checkPublishPermissions:context]) {
+                context.isRequestingPublishPermissions = true;
+                //dispatch_async(dispatch_get_main_queue(), ^(void) {
+                dispatch_async(dispatch_get_current_queue(), ^(void) {
                     [self requestNewPublishPermissions:session context:context];
                 });
             } else {
@@ -104,24 +109,27 @@
     [session requestNewPublishPermissions:publishPermissions
                           defaultAudience:publishAudience
                         completionHandler:^(FBSession *session, NSError *error) {
+                            
+                            [ForgeLog d:[NSString stringWithFormat:@"facebook_Login.requestNewPublishPermissions: %@ %@ -> %@ -> %@ -> %@", [self ParseState:session.state], error ? error : @"SUCCESS", context.permissions, session.permissions, FBSession.activeSession.permissions]];
+                            
                             if (![self checkPublishPermissions:context]) {
                                 [ForgeLog d:[NSString stringWithFormat:@"Failed to request permissions: '%@'", [publishPermissions componentsJoinedByString:@", "]]];
-                                context.invalidPermissions = true;
+                                context.invalidPublishPermissions = true;
                             } else {
-                                context.invalidPermissions = false;
-                                [self publishCompletionHandler:session error:error context:context];
+                                context.invalidPublishPermissions = false;
+                                //[self publishCompletionHandler:session error:error context:context];
                             }
                         }];
 }
 
 
-+ (void)publishCompletionHandler:(FBSession *)session error:(NSError *)error context:(LoginContext*)context {
+/*+ (void)publishCompletionHandler:(FBSession *)session error:(NSError *)error context:(LoginContext*)context {
     //[ForgeLog d:[NSString stringWithFormat:@"facebook_Login.publishCompletionHandler: %@ %@", [self ParseState:session.state], error ? error : @"SUCCESS"]];
     if (error) {
         return [facebook_Util handleError:error task:context.task];
     }
     [context.task success:[self AccessToken:FBSession.activeSession]];
-}
+}*/
 
 + (BOOL)checkPublishPermissions:(LoginContext*)context {
     return [facebook_Util permissionsAllowedByPermissions:FBSession.activeSession.permissions requestedPermissions:context.permissions];

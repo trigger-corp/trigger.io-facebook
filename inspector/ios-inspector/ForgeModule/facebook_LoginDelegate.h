@@ -15,7 +15,8 @@
 @property NSArray *permissions;
 @property NSString *audience;
 @property BOOL loginUI;
-@property BOOL invalidPermissions;
+@property BOOL invalidPublishPermissions;
+@property BOOL isRequestingPublishPermissions;
 - (LoginContext*) initWithTask:(ForgeTask*)newTask permissions:(NSArray*)newPermissions audience:(NSString*)newAudience loginUI:(BOOL)newLoginUI;
 @end
 

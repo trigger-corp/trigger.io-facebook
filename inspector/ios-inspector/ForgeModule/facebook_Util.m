@@ -30,7 +30,7 @@ static BOOL partnerProgramNotified = NO;
 		} JSONString]];
 		NSData *postData = [post dataUsingEncoding:NSASCIIStringEncoding allowLossyConversion:YES];
 		
-		NSString *postLength = [NSString stringWithFormat:@"%d", [postData length]];
+		NSString *postLength = [NSString stringWithFormat:@"%lu", (unsigned long)[postData length]];
 		
 		NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
 		[request setURL:[NSURL URLWithString:@"https://www.facebook.com/impression.php"]];
@@ -84,7 +84,7 @@ static BOOL partnerProgramNotified = NO;
 	[requestedPermissions enumerateObjectsUsingBlock:^(NSString *permission, NSUInteger idx, BOOL *stop) {
 		if ([permissions indexOfObject:permission] == NSNotFound) {
 			result = NO;
-			stop = YES;
+			*stop = YES;
             [ForgeLog d:[NSString stringWithFormat:@"Requesting Facebook permission: %@", permission]];
 		}
 	}];

@@ -1,8 +1,8 @@
 {
-    "changes": "* Update Facebook SDK's to 3.15.x\n* Support Facebook Login and Graph API 2.0\n* New method: forge.facebook.installed()\n* Resolve iOS and Android error object inconsistencies\n* Support for debugging Facebook permission strings", 
+    "changes": "* Support arm64 devices running iOS 8\n* Update Facebook iOS SDK to 3.17.1", 
     "description": "Access the Facebook SDK.\n\nThe facebook module allows access to native Facebook SDK features including SSO authentication through the Facebook app, Facebook share dialog access and Facebook graph API access.", 
     "min_platform_version": "v2.1.0", 
     "namespace": "facebook", 
-    "platform_version": "v2.1.0", 
-    "version": "2.5"
+    "platform_version": "v2.2.0", 
+    "version": "2.6"
 }
