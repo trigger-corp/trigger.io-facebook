@@ -26,6 +26,6 @@
 + (void) sessionStateChanged:(FBSession *)session state:(FBSessionState) state error:(NSError *)error context:(LoginContext*)context;
 + (BOOL) checkReadPermissions:(LoginContext*)context;
 + (BOOL) checkPublishPermissions:(LoginContext*)context;
-+ (NSDictionary*) AccessToken:(FBSession*)session;
++ (NSDictionary*) AuthResponse:(FBSession*)session context:(LoginContext*)context;
 + (NSString*) ParseState:(FBSessionState)state;
 @end

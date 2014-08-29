@@ -19,9 +19,9 @@ App ID
 ##API
 
 !method: forge.facebook.authorize([permissions], [audience], success, error)
-!param: permissions `array` an optional array of permissions to request ([Facebook SDK Documentation](https://developers.facebook.com/docs/facebook-login/permissions/v2.0#reference))
+!param: permissions `array` an optional array of permissions to request ([Facebook SDK Documentation](https://developers.facebook.com/docs/facebook-login/permissions/v2.1#reference))
 !param: audience `string` an optional string indicating who should see updates by default (iOS only)
-!param: success `function(token_information)` callback to be invoked when no errors occur
+!param: success `function(login_information)` callback to be invoked when no errors occur. `login_information` is in the format: `{ access_token, access_expires, granted, denied }`
 !description: Authorize the current user with Facebook. May show a login UI if new permissions are required, or a valid login token is not available (i.e. on first login).
 !platforms: iOS, Android
 !param: error `function(content)` called with details of any error which may occur
@@ -38,7 +38,7 @@ The ``audience`` parameter is only used on iOS (due to differences in the Facebo
 !method: forge.facebook.hasAuthorized([permissions], [audience], success, error)
 !param: permissions `array` an optional array of permissions to requst
 !param: audience `string` an optional string indicating who should see updates by default (iOS only)
-!param: success `function(token_information)` callback to be invoked when no errors occur
+!param: success `function(login_information)` callback to be invoked when no errors occur. `login_information` is in the format: `{ access_token, access_expires, granted, denied }`
 !description: Takes the same options and returns the same data as [forge.facebook.authorize](index.html#forgefacebookauthorizepermissions-audience-success-error), but will not prompt the user for login if required. Used to only log in a user if their interaction is not required.
 !platforms: iOS, Android
 !param: error `function(content)` called with details of any error which may occur

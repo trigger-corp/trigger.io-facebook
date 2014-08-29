@@ -34,14 +34,14 @@
     if (FBSession.activeSession.state == FBSessionStateCreatedTokenLoaded) {
         loggedinWithoutUI = [self openActiveSession:NO context:context];
         if (!loggedinWithoutUI && context.loginUI) {
-            loggedinWithoutUI = [self openActiveSession:YES context:context];
+            [self openActiveSession:YES context:context];
         } else if (!loggedinWithoutUI && !context.loginUI) {
             [context.task error:@"User not logged in or insufficient read permissions" type:@"EXPECTED_FAILURE" subtype:nil];
             return;
         }
     } else {
         if (context.loginUI) {
-            loggedinWithoutUI = [self openActiveSession:YES context:context];
+            [self openActiveSession:YES context:context];
         } else {
             loggedinWithoutUI = [self openActiveSession:NO context:context];
             if (!loggedinWithoutUI) {
@@ -63,6 +63,7 @@
 
 
 + (void)sessionStateChanged:(FBSession *)session state:(FBSessionState) state error:(NSError *)error context:(LoginContext*)context {
+    
     //[ForgeLog d:[NSString stringWithFormat:@"facebook_Login.sessionStateChanged: %@ %@ -> %@ -> %@ -> %@", [self ParseState:session.state], error ? error : @"SUCCESS", context.permissions, session.permissions, FBSession.activeSession.permissions]];
     
     if (error) {
@@ -75,25 +76,16 @@
             if (context.isRequestingPublishPermissions) {
                 // busy requesting publish permissions, ignore
                 
-            } else if (![self checkReadPermissions:context]) {
-                // failed asking for read permissions, send error and abort
-                NSArray *readPermissions = [facebook_Util readPermissionsInPermissions:context.permissions];
-                NSArray *missingPermissions = [facebook_Util missingPermissionsInGrantedPermissions:session.permissions requestedPermissions:readPermissions];
-                NSString *message = [NSString stringWithFormat:@"Request for read permissions: '%@' failed for: '%@'",
-                                     [readPermissions componentsJoinedByString:@", "], [missingPermissions componentsJoinedByString:@", "]];
-                [ForgeLog d:message];
-                [context.task error:message];
-                
             } else if (![self checkPublishPermissions:context]) {
-                // need publish perms
+                // also need to request publish permissions
                 context.isRequestingPublishPermissions = true;
                 dispatch_async(dispatch_get_current_queue(), ^(void) {
                     [self requestNewPublishPermissions:session context:context];
                 });
                 
             } else {
-                // only needed read perms, success
-                [context.task success:[self AccessToken:FBSession.activeSession]];
+                // only needed read permissions, success
+                [context.task success:[self AuthResponse:FBSession.activeSession context:context]];
             }
             break;
             
@@ -108,8 +100,6 @@
             [context.task error:[NSString stringWithFormat:@"Unknown error: %@", [self ParseState:session.state]] type:@"UNEXPECTED_FAILURE" subtype:nil];
             break;
     }
-    
-    
 }
 
 
@@ -124,20 +114,28 @@
         
         //[ForgeLog d:[NSString stringWithFormat:@"facebook_Login.requestNewPublishPermissions: %@ %@ -> %@ -> %@ -> %@", [self ParseState:session.state], error ? error : @"SUCCESS", context.permissions, session.permissions, FBSession.activeSession.permissions]];
         
-        // TODO failing here on iOS 8 with: com.facebook.sdk:ErrorReauthorizeFailedReasonUserCancelled
-        
-        if (![self checkPublishPermissions:context]) {
-            //context.invalidPublishPermissions = true;
-            NSArray *publishPermissions = [facebook_Util publishPermissionsInPermissions:context.permissions];
-            NSArray *missingPermissions = [facebook_Util missingPermissionsInGrantedPermissions:session.permissions requestedPermissions:publishPermissions];
-            NSString *message = [NSString stringWithFormat:@"Request for publish permissions: '%@' failed for: '%@'",
-                                 [publishPermissions componentsJoinedByString:@", "], [missingPermissions componentsJoinedByString:@", "]];
-            [ForgeLog d:message];
-            [context.task error:message];
-        } else {
-            [context.task success:[self AccessToken:FBSession.activeSession]];
+        if (NSClassFromString(@"WKWebView") && [FBErrorUtility errorCategoryForError:error] == FBErrorCategoryUserCancelled) {
+            // TODO failing here on iOS 8 with error: com.facebook.sdk:ErrorReauthorizeFailedReasonUserCancelled
+            [ForgeLog e:[NSString stringWithFormat:@"There's a known bug with the Facebook SDK under iOS 8 where publish permissions are always denied the first time you ask for them: %@", publishPermissions]];
+            [context.task success:[self AuthResponse:FBSession.activeSession context:context]];
+        } else if (error) {
+            return [facebook_Util handleError:error task:context.task];
         }
+        
+        [context.task success:[self AuthResponse:FBSession.activeSession context:context]];
     }];
+}
+
+
++ (NSDictionary*) AuthResponse:(FBSession*)session context:(LoginContext*)context {
+    NSArray *granted = session.permissions;
+    NSArray *denied = [facebook_Util missingPermissionsInGrantedPermissions:granted requestedPermissions:context.permissions];
+    return @{
+        @"access_token": [NSString stringWithFormat:@"%@", session.accessTokenData.accessToken],
+        @"access_expires": [NSNumber numberWithDouble:round([session.accessTokenData.expirationDate timeIntervalSince1970] * 1000.0)],
+        @"granted": granted,
+        @"denied": denied
+    };
 }
 
 
@@ -152,14 +150,6 @@
     NSArray *publishPermissions = [facebook_Util publishPermissionsInPermissions:context.permissions];
     //NSLog(@"checkPublishPermissions -> %@ -> %@", publishPermissions, FBSession.activeSession.permissions);
     return [facebook_Util permissionsAllowedByPermissions:FBSession.activeSession.permissions requestedPermissions:publishPermissions];
-}
-
-
-+ (NSDictionary*)AccessToken:(FBSession*)session {
-    return @{
-        @"access_token": [NSString stringWithFormat:@"%@", session.accessTokenData.accessToken],
-        @"access_expires": [NSNumber numberWithDouble:round([session.accessTokenData.expirationDate timeIntervalSince1970] * 1000.0)]
-    };
 }
 
 
