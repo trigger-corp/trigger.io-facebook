@@ -13,6 +13,7 @@
 
 + (void) application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     [FBSettings setDefaultAppID:[[[ForgeApp sharedApp] configForPlugin:@"facebook"] objectForKey:(@"appid")]];
+    [FBAppEvents activateApp];
 }
 
 

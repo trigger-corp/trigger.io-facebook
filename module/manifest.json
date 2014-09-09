@@ -1,5 +1,5 @@
 {
-    "changes": "* Support arm64 devices running iOS 8\n* Update Facebook iOS SDK to 3.18.0\n* Return permissions granted&denied by facebook.authorize() and facebook.hasAuthorized() calls (iOS)", 
+    "changes": "* Support arm64 devices running iOS 8\n* Update Facebook iOS SDK to 3.18.0\n* Return permissions granted&denied by facebook.authorize() and facebook.hasAuthorized() calls (iOS)\n* Support Facebook app usage stats (iOS)", 
     "description": "Access the Facebook SDK.\n\nThe facebook module allows access to native Facebook SDK features including SSO authentication through the Facebook app, Facebook share dialog access and Facebook graph API access.", 
     "min_platform_version": "v2.1.0", 
     "namespace": "facebook", 
