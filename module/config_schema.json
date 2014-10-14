@@ -6,6 +6,16 @@
 			"description": "App ID from Facebook developers site.",
 			"required": true,
 			"type": "string"
+		},
+		"api-version": {
+			"description": "Force use of older versions of the Facebook API (Unsupported)",
+			"required": false,
+			"type": "string"
+		},
+		"enable-platform-compatibility": {
+			"description": "Force use of older versions of the Facebook API (Unsupported)",
+			"required": false,
+			"type": "string"
 		}
 	}
 }

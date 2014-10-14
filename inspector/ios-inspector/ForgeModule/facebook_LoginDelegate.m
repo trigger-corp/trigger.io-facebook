@@ -79,7 +79,7 @@
             } else if (![self checkPublishPermissions:context]) {
                 // also need to request publish permissions
                 context.isRequestingPublishPermissions = true;
-                dispatch_async(dispatch_get_current_queue(), ^(void) {
+                dispatch_async(dispatch_get_main_queue(), ^(void) {
                     [self requestNewPublishPermissions:session context:context];
                 });
                 
