@@ -287,4 +287,9 @@ public class API {
 		}
 		task.success(true);
 	}
+
+	public static void enablePlatformCompatibility(final ForgeTask task) {
+		Settings.setPlatformCompatibilityEnabled(true);
+		task.success(true);
+	}
 }

@@ -137,5 +137,16 @@ forge['facebook'] = {
 		"user_actions.news", "user_actions.video", /*"user_actions.APP_NAMESPACE",*/
 		// pages
 		"manage_pages", "read_page_mailboxes"
-	]
+	],
+
+	/**
+	 * WARNING: This call is entirely unsupported. Use at your own risk. We will
+	 *          not respond to support queries about this call. Facebook will no
+	 *          longer support this call after December 25th.
+	 *
+	 * Enables Facebook v1.0 API Compatibility
+	 */
+	'enablePlatformCompatibility': function (success, error) {
+		forge.internal.call("facebook.enablePlatformCompatibility", {}, success, error);
+	}
 };

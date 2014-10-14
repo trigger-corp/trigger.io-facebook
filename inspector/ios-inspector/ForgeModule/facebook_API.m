@@ -113,4 +113,10 @@
 	*/
 }
 
++ (void)enablePlatformCompatibility:(ForgeTask*)task {
+	// WARNING: This will probably stop working after December 25
+	[FBSettings enablePlatformCompatibility:true];
+	[task success:[NSNumber numberWithBool:YES]];
+}
+
 @end
