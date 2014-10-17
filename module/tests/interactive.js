@@ -110,4 +110,53 @@ if (forge.is.mobile()) {
 			}
 		});
 	});
+
+	asyncTest("Send apprequests", 1, function () {
+		var obj = {
+			method: 'apprequests',
+			message: '†Ês†îñg API'
+		};
+		forge.facebook.ui(obj, function (res) {
+			ok(res.request);
+			start();
+		}, function (err) {
+			ok(false, JSON.stringify(err));
+			start();
+		});
+	});
+
+	// share
+	asyncTest("Share link", 1, function () {
+		var obj = {
+			method: 'share',
+			link: 'https://trigger.io'
+		};
+		forge.facebook.ui(obj, function (res) {
+			ok(res.post_id);
+			start();
+		}, function (err) {
+			ok(false, JSON.stringify(err));
+			start();
+		});
+	});
+
+	// share_open_graph
+	asyncTest("Share OpenGraph", 1, function () {
+		var unique_id = Math.floor(Math.random() * 100000);
+		var obj = {
+			method: 'share_open_graph',
+			action_type: 'og.likes',
+			action_properties: JSON.stringify({
+				object: 'https://developers.facebook.com/docs/#' + unique_id
+			})
+		};
+		forge.facebook.ui(obj, function (res) {
+			forge.logging.log("TODO GOT BACK: " + JSON.stringify(res));
+			ok(true);
+			start();
+		}, function (err) {
+			ok(false, JSON.stringify(err));
+			start();
+		});
+	});
 }
