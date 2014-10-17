@@ -24,22 +24,44 @@ import com.google.gson.JsonParser;
 import com.google.gson.JsonPrimitive;
 
 
-public class LoginDelegate {	
-	
-	public static void handleLogin(LoginContext context) {		
-		String applicationId = ForgeApp.configForPlugin("facebook").get("appid").getAsString();				
+public class LoginDelegate {
+
+	public static void handleLogin(LoginContext context) {
+		String applicationId = ForgeApp.configForPlugin("facebook").get("appid").getAsString();
 		boolean loggedInWithoutUI = false;
-		
+
+		if (context.dialog == false) {
+			ForgeLog.i("THIS IS A hasAuthorized CALL");
+			// hasAuthorized
+
+			// do we have an existing session?
+			// AND is it valid ?
+			// AND has it logged me in?
+			// AND does it have the correct permissions?
+
+		} else {
+			ForgeLog.i("THIS IS AN authorize CALL");
+			// authorize
+
+			// do we have an existing session?
+			// AND is it valid?
+			// AND has it logged me in?
+			// AND does it have the correct permissions
+
+			// OR
+			// go through full login
+		}
+
 		Session session = new Session.Builder(ForgeApp.getActivity()).setApplicationId(applicationId).build();
 		ForgeLog.d("handleLogin built session: " + session + " -> " + (session != null ? session.getState() : "NULL"));
 		if (session != null) {
-			ForgeLog.d("HandleLogin Session info: " + 
-					" -> closed." + session.isClosed() + 
+			ForgeLog.d("HandleLogin Session info: " +
+					" -> closed." + session.isClosed() +
 					" -> opened." + session.isOpened() +
 					" -> " + session.getState());
 		}
 		Session.setActiveSession(session);
-		
+
 		// Is facebook correctly caching logins now?
 		/*final SharedPreferences prefs = Util.getStorage(task);
 		String access_token = prefs.getString("access_token", null);
@@ -50,9 +72,9 @@ public class LoginDelegate {
 		if (expires != 0) {
 			facebook.setAccessExpires(expires);
 		}*/
-			
+
 		if (session != null && session.getState() == SessionState.CREATED_TOKEN_LOADED) {
-			ForgeLog.d("handleLogin #1 have an existing session with a loaded token");			
+			ForgeLog.d("handleLogin #1 have an existing session with a loaded token");
 			loggedInWithoutUI = openActiveSession(session, false, context);
 			if (loggedInWithoutUI) {
 				ForgeLog.d("handleLogin #1 success without dialog");
@@ -64,13 +86,13 @@ public class LoginDelegate {
 				context.task.error("User not logged in to new session or insuficient permissions", "EXPECTED_FAILURE", null);
 				return;
 			}
-		} else { 
+		} else {
 			ForgeLog.d("handleLogin #2 need to create session from scratch");
 			if (context.dialog) {
 				ForgeLog.d("handleLogin #2 with dialog");
 				openActiveSession(session, true, context);
 			} else {
-				ForgeLog.d("handleLogin #2 without dialog");				
+				ForgeLog.d("handleLogin #2 without dialog");
 				loggedInWithoutUI = openActiveSession(session, false, context);
 				if (!loggedInWithoutUI) {
 					ForgeLog.e("this was a hasAuthorized call that failed");
@@ -82,12 +104,12 @@ public class LoginDelegate {
 			}
 		}
 	}
-	
+
 	private static boolean openActiveSession(Session session, boolean dialog, final LoginContext context) {
-		ForgeLog.d("openActiveSession: " + dialog + 
-				" -> " + session.isClosed() + 
+		ForgeLog.d("openActiveSession: " + dialog +
+				" -> " + session.isClosed() +
 				" -> " + session.isOpened() +
-				" -> " + session.getState());		
+				" -> " + session.getState());
 		List<String> readPermissions = Util.readPermissionsInPermissions(context.permissions);
 		Session.OpenRequest openRequest = new Session.OpenRequest(ForgeApp.getActivity());
 		openRequest.setCallback(new SessionStatusCallback(context));
@@ -96,30 +118,38 @@ public class LoginDelegate {
 			openRequest.setLoginBehavior(SessionLoginBehavior.SSO_ONLY);
 		}
 		session.openForRead(openRequest);
-		boolean ret = session.isOpened() && (session.getState() == SessionState.OPENED); 
-		ForgeLog.d("openActiveSession ret: " + dialog + 
-				" -> " + session.isClosed() + 
+		boolean ret = session.isOpened() && (session.getState() == SessionState.OPENED);
+		ForgeLog.d("openActiveSession ret: " + dialog +
+				" -> " + session.isClosed() +
 				" -> " + session.isOpened() +
 				" -> " + session.getState() +
 				" -> " + ret);
 		return ret;
 	}
-	
+
 	private static void sessionStateChanged(Session session, SessionState state, Exception exception, LoginContext context) {
-		ForgeLog.d("sessionStateChanged: " + state + 
+		ForgeLog.d("sessionStateChanged: " + state +
 				" -> " + (exception == null ? "SUCCESS" : exception) +
-				" -> " + context.permissions + 
-				" -> " + session.getPermissions() + 
+				" -> " + context.permissions +
+				" -> " + session.getPermissions() +
 				" -> " + Session.getActiveSession().getPermissions());
-		
+
+
+		if (state.isOpened()) {
+			ForgeLog.i("NEW - Logged in");
+		} else if (state.isClosed()) {
+			ForgeLog.i("NEW - Logged out");
+		}
+
+
 		if (state == SessionState.CLOSED_LOGIN_FAILED) { // TODO should we be catching all login failures here?
 			ForgeLog.e("CLOSED LOGIN FAILED!");
 			context.task.error("User login failed", "EXPECTED_FAILURE", null);
 			return;
-			
-		} else if (exception != null) { 
+
+		} else if (exception != null) {
 			handleStatusCallbackException(exception, context);
-			
+
 		} else if (state == SessionState.OPENED) {
 			if (!checkPublishPermissions(session, context)) {
 				ForgeLog.i("Need publish permissions too");
@@ -128,30 +158,30 @@ public class LoginDelegate {
 				ForgeLog.i("Got all the permissions, I think we're good to go");
 				context.task.success(AuthResponse(session, context));
 			}
-			
+
 		} else if (state == SessionState.OPENED_TOKEN_UPDATED) { // gets invoked after requestNewPublishPermissions
 			if (!checkPublishPermissions(session, context)) {
 				ForgeLog.d("I don't think we got everything but its probably okay");
 			}
 			ForgeLog.i("Asked for publish permissions and now I think we're good to go");
 			context.task.success(AuthResponse(session, context));
-			
+
 		} else {
 			ForgeLog.i("STATE NOT HANDLED");
 		}
 	}
-	
+
 	private static void requestNewPublishPermissions(Session session, LoginContext context) {
 		List<String> publishPermissions = Util.publishPermissionsInPermissions(context.permissions);
 		Session.NewPermissionsRequest newPermissionsRequest = new Session.NewPermissionsRequest(ForgeApp.getActivity(), publishPermissions);
 		session.requestNewPublishPermissions(newPermissionsRequest);
 	}
-	
+
 	private static boolean checkPublishPermissions(Session session, LoginContext context) {
 		List<String> publishPermissions = Util.publishPermissionsInPermissions(context.permissions);
 		return Util.grantedPermissionsAreSuperset(session.getPermissions(), publishPermissions);
 	}
-	
+
 	private static JsonObject AuthResponse(Session session, LoginContext context) {
 		// Is facebook correctly caching logins now?
 		/*final SharedPreferences prefs = Util.getStorage(context.task);
@@ -159,7 +189,7 @@ public class LoginDelegate {
 		editor.putString("access_token", session.getAccessToken());
 		editor.putLong("access_expires", session.getExpirationDate().getTime());
 		editor.commit();*/
-		
+
 		JsonObject response = new JsonObject();
 		response.addProperty("access_token", session.getAccessToken());
 		response.addProperty("access_expires", session.getExpirationDate().getTime());
@@ -175,7 +205,7 @@ public class LoginDelegate {
 		response.add("denied", denied);
 		return response;
 	}
-	
+
 	private static class SessionStatusCallback implements Session.StatusCallback {
 		private final LoginContext context;
 		public SessionStatusCallback(LoginContext context) {
@@ -186,10 +216,10 @@ public class LoginDelegate {
 			sessionStateChanged(session, state, exception, context);
 		}
 	}
-	
+
 	private static void handleStatusCallbackException(Exception exception, LoginContext context) {
-		ForgeLog.e("handleStatusCallbackException: " + exception);		
-		JsonObject result = new JsonObject();		
+		ForgeLog.e("handleStatusCallbackException: " + exception);
+		JsonObject result = new JsonObject();
 		if (exception instanceof FacebookAuthorizationException) {
 			result.addProperty("message", ((FacebookAuthorizationException)exception).getMessage());
 			result.addProperty("type", "FacebookAuthorizationException");
