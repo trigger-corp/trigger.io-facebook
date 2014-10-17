@@ -30,12 +30,27 @@ public class LoginDelegate {
 		String applicationId = ForgeApp.configForPlugin("facebook").get("appid").getAsString();
 		boolean loggedInWithoutUI = false;
 
+		Session session = new Session.Builder(ForgeApp.getActivity()).setApplicationId(applicationId).build();
+		ForgeLog.d("handleLogin built session: " + session + " -> " + (session != null ? session.getState() : "NULL"));
+		if (session != null) {
+			ForgeLog.d("HandleLogin Session info: " +
+					" -> closed." + session.isClosed() +
+					" -> opened." + session.isOpened() +
+					" -> " + session.getState());
+		}
+		Session.setActiveSession(session);
+
 		if (context.dialog == false) {
 			ForgeLog.i("THIS IS A hasAuthorized CALL");
 			// hasAuthorized
 
 			// do we have an existing session?
 			// AND is it valid ?
+			if (session == null || session.getState() != SessionState.CREATED_TOKEN_LOADED) {
+				ForgeLog.i("NEW definitely not authorized SHORTPATH");
+				context.task.error("User not authorized", "EXPECTED_FAILURE", null);
+				return;
+			}
 			// AND has it logged me in?
 			// AND does it have the correct permissions?
 
@@ -52,15 +67,6 @@ public class LoginDelegate {
 			// go through full login
 		}
 
-		Session session = new Session.Builder(ForgeApp.getActivity()).setApplicationId(applicationId).build();
-		ForgeLog.d("handleLogin built session: " + session + " -> " + (session != null ? session.getState() : "NULL"));
-		if (session != null) {
-			ForgeLog.d("HandleLogin Session info: " +
-					" -> closed." + session.isClosed() +
-					" -> opened." + session.isOpened() +
-					" -> " + session.getState());
-		}
-		Session.setActiveSession(session);
 
 		// Is facebook correctly caching logins now?
 		/*final SharedPreferences prefs = Util.getStorage(task);

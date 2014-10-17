@@ -129,7 +129,7 @@ if (forge.is.mobile()) {
 	asyncTest("Share link", 1, function () {
 		var obj = {
 			method: 'share',
-			link: 'https://trigger.io'
+			href: 'https://trigger.io' /* TODO it used to be link!? */
 		};
 		forge.facebook.ui(obj, function (res) {
 			ok(res.post_id);
