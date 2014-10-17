@@ -1,4 +1,14 @@
 [
+	{ "do": { "android_add_to_application_manifest": {
+		"element": {
+			"tag": "activity",
+			"attributes": {
+				"android:name": "com.facebook.LoginActivity",
+				"android:theme": "@android:style/Theme.Translucent.NoTitleBar",
+				"android:label": "Facebook Login"
+			} }	}
+		}
+	},
 	{ "do": { "android_add_proguard_rule": "-keepattributes Signature" } },
 	{ "do": { "android_add_proguard_rule": "-dontwarn com.facebook.**" } },
 	{ "do": { "android_add_proguard_rule": "-keep class com.facebook.** { *; }" } }
