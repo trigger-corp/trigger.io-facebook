@@ -7,6 +7,7 @@
 //
 
 #import "facebook_DialogDelegate.h"
+#import "facebook_Util.h"
 
 @implementation facebook_DialogDelegate
 
@@ -28,7 +29,8 @@
 }
 
 - (void) dialog:(FBDialog *)dialog didFailWithError:(NSError *)error {
-	[task error:error];
+	//[task error:error];
+    [facebook_Util handleError:error task:task closeSession:false];
 	// "release"
 	me = nil;
 	fb = nil;

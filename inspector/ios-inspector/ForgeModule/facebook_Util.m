@@ -50,7 +50,7 @@ static BOOL partnerProgramNotified = NO;
 
 
 /**
- * From: From: https://developers.facebook.com/docs/facebook-login/permissions/v2.0#reference
+ * From: https://developers.facebook.com/docs/facebook-login/permissions/v2.0#reference
  */
 + (NSArray *)publishPermissions {
     static NSArray *_publishPermissions;
