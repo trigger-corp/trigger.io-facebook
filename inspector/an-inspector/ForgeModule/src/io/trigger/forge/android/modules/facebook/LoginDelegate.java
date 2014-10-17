@@ -18,7 +18,9 @@ import com.facebook.Session;
 import com.facebook.SessionLoginBehavior;
 import com.facebook.SessionState;
 import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import com.google.gson.JsonPrimitive;
 
 
@@ -206,13 +208,7 @@ public class LoginDelegate {
 			result.addProperty("type", "FacebookOperationCanceledException");
 		} else if (exception instanceof FacebookServiceException) {
 			FacebookRequestError error = ((FacebookServiceException) exception).getRequestError();
-			result.addProperty("type", error.getErrorType());
-			result.addProperty("code", error.getErrorCode());			
-			if (error.getErrorCode() == 4201) {
-				result.addProperty("message", "User cancelled dialog");
-			} else {
-				result.addProperty("message", error.getErrorMessage());
-			}
+			result = Util.ParseFacebookRequestError(error);
 		} else {
 			result.addProperty("message", exception.getMessage());
 			result.addProperty("type", "Unknown");

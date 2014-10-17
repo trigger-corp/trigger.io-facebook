@@ -17,7 +17,10 @@ import org.apache.http.message.BasicNameValuePair;
 
 import android.content.SharedPreferences;
 
+import com.facebook.FacebookAuthorizationException;
 import com.facebook.FacebookDialogException;
+import com.facebook.FacebookException;
+import com.facebook.FacebookGraphObjectException;
 import com.facebook.FacebookOperationCanceledException;
 import com.facebook.FacebookRequestError;
 import com.facebook.FacebookServiceException;
@@ -109,11 +112,27 @@ public class Util {
 		subset.retainAll(publishPermissions());
 		return subset;
 	}
-	
+
 	public static boolean grantedPermissionsAreSuperset(List<String> grantedPermissions, List<String> requestedPermissions) {
 		List<String> superset = new ArrayList<String>();
 		superset.addAll(requestedPermissions);
 		superset.removeAll(grantedPermissions);
 		return superset.isEmpty();
+	}
+
+	public static JsonObject ParseFacebookRequestError(FacebookRequestError error) {
+		JsonObject result = new JsonObject();
+		result.addProperty("type", error.getErrorType());
+		result.addProperty("code", error.getErrorCode());
+		if (error.getErrorCode() == 4201) {
+			result.addProperty("message", "User cancelled dialog");
+		} else {
+			result.addProperty("message", error.getErrorMessage());
+		}
+		if (error.shouldNotifyUser() == true) {
+			result.addProperty("error_user_msg", error.getErrorUserMessage());
+			result.addProperty("error_user_title", error.getErrorUserTitle());
+		}
+		return result;
 	}
 }

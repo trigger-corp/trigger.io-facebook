@@ -124,9 +124,7 @@ static BOOL partnerProgramNotified = NO;
 + (void)handleError:(NSError *)error task:(ForgeTask*)task closeSession:(BOOL)closeSession {
     //[ForgeLog d:[NSString stringWithFormat:@"facebook_Util.handleError: %@", error]];
     
-    if ([FBErrorUtility shouldNotifyUserForError:error] == YES) {
-        [task error:[FBErrorUtility userMessageForError:error]];
-    } else if ([FBErrorUtility errorCategoryForError:error] == FBErrorCategoryUserCancelled) {
+    if ([FBErrorUtility errorCategoryForError:error] == FBErrorCategoryUserCancelled) {
         [task error:@"User cancelled login" type:@"EXPECTED_FAILURE" subtype:nil];
     } else if ([FBErrorUtility errorCategoryForError:error] == FBErrorCategoryAuthenticationReopenSession){
         [task error:@"Your current session is no longer valid. Please log in again."];
@@ -151,7 +149,7 @@ static BOOL partnerProgramNotified = NO;
     }
     
     id err = [error userInfo] [@"com.facebook.sdk:ParsedJSONResponseKey"];
-    //[ForgeLog d:[NSString stringWithFormat:@"ParseFacebookError response class: %@", NSStringFromClass([err class])]];
+    //[ForgeLog d:[NSString stringWithFormat:@"ParseFacebookError response class: %@ -> %@", NSStringFromClass([err class]), err]];
     
     if ([err isKindOfClass:[NSDictionary class]]) {
         // sanity

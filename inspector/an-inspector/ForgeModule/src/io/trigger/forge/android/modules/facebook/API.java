@@ -83,10 +83,7 @@ public class API {
 					public void onCompleted(Response response) {
 						FacebookRequestError error = response.getError();
 						if (error != null) {
-							JsonObject result = new JsonObject();
-							result.addProperty("message", error.getErrorMessage());
-							result.addProperty("type", error.getErrorType());
-							result.addProperty("code", error.getErrorCode());
+							JsonObject result = Util.ParseFacebookRequestError(error);
 							task.error(result);
 						} else {
 							JsonElement result = (new JsonParser().parse(response.getRawResponse()));
