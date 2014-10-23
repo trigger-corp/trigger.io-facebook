@@ -17,13 +17,7 @@ import org.apache.http.message.BasicNameValuePair;
 
 import android.content.SharedPreferences;
 
-import com.facebook.FacebookAuthorizationException;
-import com.facebook.FacebookDialogException;
-import com.facebook.FacebookException;
-import com.facebook.FacebookGraphObjectException;
-import com.facebook.FacebookOperationCanceledException;
 import com.facebook.FacebookRequestError;
-import com.facebook.FacebookServiceException;
 import com.facebook.android.AsyncFacebookRunner;
 import com.facebook.android.Facebook;
 import com.google.gson.JsonObject;
@@ -86,8 +80,7 @@ public class Util {
 	
 	public static SharedPreferences getStorage(ForgeTask task) {
  		return ForgeApp.getActivity().getSharedPreferences("facebook", 0);
- 	}
-	
+ 	}	
 
 	private static ArrayList<String> _publishPermissions;
 	private static ArrayList<String> publishPermissions() {
