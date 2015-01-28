@@ -20,6 +20,8 @@ public class EventListener extends ForgeEventListener {
 		super.onCreate(savedInstanceState);
 		uiHelper = new UiLifecycleHelper(ForgeApp.getActivity(), null);
 		uiHelper.onCreate(savedInstanceState);
+		String applicationId = ForgeApp.configForPlugin("facebook").get("appid").getAsString();
+		AppEventsLogger.activateApp(ForgeApp.getActivity(), applicationId);
 	}
 	
 	@Override
@@ -44,7 +46,8 @@ public class EventListener extends ForgeEventListener {
 	@Override
 	public void onResume() {
 		uiHelper.onResume();
-		AppEventsLogger.activateApp(ForgeApp.getActivity());
+		String applicationId = ForgeApp.configForPlugin("facebook").get("appid").getAsString();
+		AppEventsLogger.activateApp(ForgeApp.getActivity(), applicationId);
 	}
 	
 	@Override
