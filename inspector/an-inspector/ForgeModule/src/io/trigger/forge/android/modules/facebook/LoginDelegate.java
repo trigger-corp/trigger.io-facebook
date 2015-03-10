@@ -26,7 +26,7 @@ public class LoginDelegate {
 		String applicationId = ForgeApp.configForPlugin("facebook").get("appid").getAsString();
 		boolean loggedInWithoutUI = false;
 
-		Session session = new Session.Builder(ForgeApp.getActivity()).setApplicationId(applicationId).build();
+		Session session = new Session.Builder(ForgeApp.getActivity().getApplicationContext()).setApplicationId(applicationId).build();
 		Session.setActiveSession(session);		
 		/*ForgeLog.d("handleLogin built session: " + session + " -> " + (session != null ? session.getState() : "NULL"));
 		ForgeLog.d("HandleLogin Session info: " +

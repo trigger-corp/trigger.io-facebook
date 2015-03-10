@@ -75,12 +75,20 @@ public class LoginActivity extends Activity {
         authorizationClient.setBackgroundProcessingListener(new AuthorizationClient.BackgroundProcessingListener() {
             @Override
             public void onBackgroundProcessingStarted() {
-                findViewById(R.id.com_facebook_login_activity_progress_bar).setVisibility(View.VISIBLE);
+            	try {
+            		findViewById(R.id.com_facebook_login_activity_progress_bar).setVisibility(View.VISIBLE);
+            	} catch (Exception e) {
+                	Log.e(TAG, e.toString());
+                }
             }
 
             @Override
             public void onBackgroundProcessingStopped() {
-                findViewById(R.id.com_facebook_login_activity_progress_bar).setVisibility(View.GONE);
+            	try {
+            		findViewById(R.id.com_facebook_login_activity_progress_bar).setVisibility(View.GONE);
+            	} catch (Exception e) {
+                	Log.e(TAG, e.toString());
+                }
             }
         });
     }
@@ -122,7 +130,11 @@ public class LoginActivity extends Activity {
         super.onPause();
 
         authorizationClient.cancelCurrentHandler();
-        findViewById(R.id.com_facebook_login_activity_progress_bar).setVisibility(View.GONE);
+        try {
+        	findViewById(R.id.com_facebook_login_activity_progress_bar).setVisibility(View.GONE);
+        } catch (Exception e) {
+        	Log.e(TAG, e.toString());
+        }
     }
 
     @Override
