@@ -4,6 +4,8 @@ import io.trigger.forge.android.core.ForgeApp;
 import io.trigger.forge.android.core.ForgeLog;
 import io.trigger.forge.android.core.ForgeTask;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -16,6 +18,12 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 
 import android.content.SharedPreferences;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.Signature;
+import android.content.pm.PackageManager.NameNotFoundException;
+import android.util.Base64;
+
 
 import com.facebook.FacebookRequestError;
 import com.facebook.android.AsyncFacebookRunner;
@@ -127,5 +135,25 @@ public class Util {
 			result.addProperty("error_user_title", error.getErrorUserTitle());
 		}
 		return result;
+	}
+	public static String getKeyHash(String packageName) {
+		PackageInfo info;
+		String hashKey = null;
+		try {
+		    info = ForgeApp.getActivity().getPackageManager().getPackageInfo(packageName, PackageManager.GET_SIGNATURES);
+		    for (Signature signature : info.signatures) {
+		        MessageDigest md;
+		        md = MessageDigest.getInstance("SHA");
+		        md.update(signature.toByteArray());
+		        hashKey = new String(Base64.encode(md.digest(), 0));		        
+		    }
+		} catch (NameNotFoundException e1) {
+		    ForgeLog.e(e1.toString());
+		} catch (NoSuchAlgorithmException e) {
+			ForgeLog.e(e.toString());
+		} catch (Exception e) {
+			ForgeLog.e(e.toString());
+		}
+		return hashKey.replace("\n", "");
 	}
 }

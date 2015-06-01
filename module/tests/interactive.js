@@ -159,4 +159,17 @@ if (forge.is.mobile()) {
 			start();
 		});
 	});
+	// get android key hash
+	if (forge.is.android) {
+		asyncTest("Get Key Hash", 1, function() {
+			forge.facebook.getKeyHash(function(keyHash) {
+				forge.logging.log("Got Key Hash: " + keyHash);
+				ok(keyHash);
+				start();
+			}, function(err) {
+				ok(false, JSON.stringify(err));
+				start();
+			});
+		});
+	}
 }
