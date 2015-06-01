@@ -73,6 +73,13 @@ The ``audience`` parameter is only used on iOS (due to differences in the Facebo
 !platforms: iOS, Android
 !param: error `function(content)` called with details of any error which may occur
 
+
+!method: forge.facebook.getKeyHash(success, error)
+!param: success `function(installed)` callback to be invoked when no errors occur
+!description: Returns a string representing the Facebook key hash for the application.
+!platforms: Android
+!param: error `function(content)` called with details of any error which may occur
+
 ##Tips
 
 For a quick tutorial on setting up your app in Facebook to enable login and open graph API calls see our [demo app build instructions](https://github.com/trigger-corp/scrumptious#preparing-your-own-version-ready-for-deployment).
@@ -92,8 +99,7 @@ For a quick tutorial on setting up your app in Facebook to enable login and open
 
 -  On Android a hash of the key used to sign your app is required by
    Facebook to confirm your app should be allowed to access the Facebook
-   API. The easiest way to configure this is to simply start using the
-   Facebook API, any API methods will return an error message which
+   API. One way to obtain this is by using this module's `getHashKey` method, which you can call from Javascript. The other way to configure this is to simply start using the Facebook API, any API methods will return an error message which
    includes the hash and the URL to visit to configure it.
 
 ![Hash error](hash_error.png)
