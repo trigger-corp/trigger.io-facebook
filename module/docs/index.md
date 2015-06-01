@@ -75,10 +75,10 @@ The ``audience`` parameter is only used on iOS (due to differences in the Facebo
 
 
 !method: forge.facebook.getKeyHash(success, error)
-!param: success `function(installed)` callback to be invoked when no errors occur
+!param: success `function(hashKey)` callback to be invoked when no errors occur
 !description: Returns a string representing the Facebook key hash for the application.
 !platforms: Android
-!param: error `function(content)` called with details of any error which may occur
+!param: error `function(err)` called with details of any error which may occur
 
 ##Tips
 
