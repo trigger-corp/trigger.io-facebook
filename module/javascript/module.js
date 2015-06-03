@@ -148,5 +148,8 @@ forge['facebook'] = {
 	 */
 	'enablePlatformCompatibility': function (success, error) {
 		forge.internal.call("facebook.enablePlatformCompatibility", {}, success, error);
+	},
+	'getKeyHash': function (success, error) {
+		forge.internal.call("facebook.getKeyHash", {}, success, error);
 	}
 };

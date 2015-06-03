@@ -252,4 +252,7 @@ public class API {
 		Settings.setPlatformCompatibilityEnabled(true);
 		task.success(true);
 	}
+	public static void getKeyHash(final ForgeTask task) {		
+		task.success(Util.getKeyHash(ForgeApp.getActivity().getPackageName()));
+	}
 }
