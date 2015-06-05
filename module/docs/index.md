@@ -5,16 +5,12 @@ The ``forge.facebook`` namespace allows access to the [native Facebook SDK](http
 
 You can see a demo app that makes use of the Facebook module in [this screencast](https://vimeo.com/62372298), with the [code on Github](https://github.com/trigger-corp/scrumptious).
 
-> ::Important:: Using the Facebook module requires you to have a Facebook account and signup to [Facebook's developer platform](https://developers.facebook.com/). Your relationship with Facebook is separate from your relationship with Trigger.io. If you include the Facebook module in your app, the App Id will report information about app installs and usage to Facebook with that information also made available on your dashboard at https://developers.facebook.com. You must disclose to your users that your app passes the App Id to you and Facebook.
+> ::Important:: Using the Facebook module requires you to have a Facebook account and signup to Facebook's developer platform. Your relationship with Facebook is separate from your relationship with Trigger.io. If you include the Facebook module in your app, the App Id will report information about app installs and usage to Facebook with that information also made available on your dashboard at https://developers.facebook.com. You must disclose to your users that your app passes the App Id to you and Facebook. More information can be found in the Tips section below and at [https://developers.facebook.com/](https://developers.facebook.com/)
 
 ##Config options
 
-###Orientations
-
 App ID
 :  App ID from Facebook developers site.
-
-> ::Note:: To use this module you will need to setup your app in Facebook. More information can be found in the Tips section below and at [https://developers.facebook.com/](https://developers.facebook.com/)
 
 ##API
 
@@ -104,7 +100,7 @@ For a quick tutorial on setting up your app in Facebook to enable login and open
 
 ![Hash error](hash_error.png)
 
-> ::Note:: there is currently a bug in the Facebook app, where the hash displayed in these error messages includes underscores where there should be forward slashes. E.g. if the error message includes the hash `xyWbxW819j_pJ13YaSjFkbi_A2Y`, you should put `xyWbxW819j/pJ13YaSjFkbi/A2Y` as the key hash in the Android settings for your Facebook app.
+> ::Note:: there is a bug in some versions of the Facebook SDK, where the hash displayed in these error messages includes underscores where there should be forward slashes. If the error message includes the hash `xyWbxW819j_pJ13YaSjFkbi_A2Y`, you should put `xyWbxW819j/pJ13YaSjFkbi/A2Y` as the key hash in the Android settings for your Facebook app.
 
 ###iOS
 
