@@ -47,3 +47,6 @@ inspector/ios-inspector/build
 
 # Module stuff
 inspector/ios-inspector/FBUserSettingsViewResources.bundle
+
+# Junk
+.DS_Store
