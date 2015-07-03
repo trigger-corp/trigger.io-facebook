@@ -18,20 +18,17 @@ package com.facebook.widget;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewStub;
 import android.widget.*;
-
 import com.facebook.FacebookException;
 import com.facebook.android.R;
 import com.facebook.internal.ImageDownloader;
 import com.facebook.internal.ImageRequest;
 import com.facebook.internal.ImageResponse;
 import com.facebook.model.GraphObject;
-
 import org.json.JSONObject;
 
 import java.net.URI;
@@ -313,12 +310,8 @@ class GraphObjectAdapter<T extends GraphObject> extends BaseAdapter implements S
         if (result == null) {
             result = inflater.inflate(R.layout.com_facebook_picker_activity_circle_row, null);
         }
-        try {
-        	ProgressBar activityCircle = (ProgressBar) result.findViewById(R.id.com_facebook_picker_row_activity_circle);
-        	activityCircle.setVisibility(View.VISIBLE);
-        } catch (Exception e) {
-        	Log.e("GraphObjectAdapter", e.toString());
-        }
+        ProgressBar activityCircle = (ProgressBar) result.findViewById(R.id.com_facebook_picker_row_activity_circle);
+        activityCircle.setVisibility(View.VISIBLE);
 
         return result;
     }
@@ -344,16 +337,12 @@ class GraphObjectAdapter<T extends GraphObject> extends BaseAdapter implements S
             }
         }
 
-        try {
-	        ViewStub profilePicStub = (ViewStub) result.findViewById(R.id.com_facebook_picker_profile_pic_stub);
-	        if (!getShowPicture()) {
-	            profilePicStub.setVisibility(View.GONE);
-	        } else {
-	            ImageView imageView = (ImageView) profilePicStub.inflate();
-	            imageView.setVisibility(View.VISIBLE);
-	        }
-        } catch (Exception e) {
-        	Log.e("GraphObjectAdapter", e.toString());
+        ViewStub profilePicStub = (ViewStub) result.findViewById(R.id.com_facebook_picker_profile_pic_stub);
+        if (!getShowPicture()) {
+            profilePicStub.setVisibility(View.GONE);
+        } else {
+            ImageView imageView = (ImageView) profilePicStub.inflate();
+            imageView.setVisibility(View.VISIBLE);
         }
 
         return result;
@@ -392,7 +381,7 @@ class GraphObjectAdapter<T extends GraphObject> extends BaseAdapter implements S
                 ImageView profilePic = (ImageView) view.findViewById(R.id.com_facebook_picker_image);
 
                 // See if we have already pre-fetched this; if not, download it.
-                if (prefetchedPictureCache.containsKey(id) && profilePic != null) {
+                if (prefetchedPictureCache.containsKey(id)) {
                     ImageResponse response = prefetchedPictureCache.get(id);
                     profilePic.setImageBitmap(response.getBitmap());
                     profilePic.setTag(response.getRequest().getImageUri());
