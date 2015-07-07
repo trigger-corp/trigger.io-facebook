@@ -11,7 +11,10 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map.Entry;
 
+import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
+import android.net.Uri;
 import android.os.Bundle;
 
 import com.facebook.FacebookRequestError;
@@ -252,7 +255,34 @@ public class API {
 		Settings.setPlatformCompatibilityEnabled(true);
 		task.success(true);
 	}
+
 	public static void getKeyHash(final ForgeTask task) {		
 		task.success(Util.getKeyHash(ForgeApp.getActivity().getPackageName()));
 	}
+
+	public static void share(final ForgeTask task, @ForgeParam("url") final String url) {
+		Intent intent = new Intent(Intent.ACTION_SEND);
+		intent.setType("text/plain");
+		intent.putExtra(Intent.EXTRA_TEXT, url);
+
+		// See if official Facebook app is found
+		boolean facebookAppFound = false;
+		List<ResolveInfo> matches = ForgeApp.getActivity().getPackageManager().queryIntentActivities(intent, 0);
+		for (ResolveInfo info : matches) {
+			if (info.activityInfo.packageName.toLowerCase().startsWith("com.facebook.katana")) {
+				intent.setPackage(info.activityInfo.packageName);
+				facebookAppFound = true;
+				break;
+			}
+		}
+
+		// As fallback, launch sharer.php in a browser
+		if (!facebookAppFound) {
+			String sharerUrl = "https://www.facebook.com/sharer/sharer.php?u=" + url;
+			intent = new Intent(Intent.ACTION_VIEW, Uri.parse(sharerUrl));
+		}
+		ForgeApp.getActivity().startActivity(intent);
+		task.success();
+	}
+
 }
