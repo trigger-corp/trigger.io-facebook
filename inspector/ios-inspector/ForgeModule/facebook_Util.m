@@ -142,6 +142,37 @@ static BOOL partnerProgramNotified = NO;
     }
 }
 
+/*
+ * Helper method to parse URL parameters.
+ */
++ (NSDictionary*)parseURLParams:(NSString *)query {
+    NSArray *pairs = [query componentsSeparatedByString:@"&"];
+    NSMutableDictionary *params = [[NSMutableDictionary alloc] init];
+    for (NSString *pair in pairs) {
+        NSArray *kv = [pair componentsSeparatedByString:@"="];
+        NSString *val =
+        [[kv objectAtIndex:1]
+         stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+
+        [params setObject:val forKey:[kv objectAtIndex:0]];
+    }
+    return params;
+}
+
+
+/*
+ * Helper method to show alert results or errors
+ */
++ (NSString *)checkErrorMessage:(NSError *)error {
+    NSString *errorMessage = @"";
+    if (error.fberrorUserMessage) {
+        errorMessage = error.fberrorUserMessage;
+    } else {
+        errorMessage = @"Operation failed due to a connection problem, retry later.";
+    }
+    return errorMessage;
+}
+
 
 + (NSDictionary*) ParseFacebookError:(NSError*)error {
     if (error == nil || [error userInfo] == nil) {

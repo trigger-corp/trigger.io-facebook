@@ -125,14 +125,25 @@ if (forge.is.mobile()) {
 		});
 	});
 
-	// share
-	asyncTest("Share link", 1, function () {
+	// share ui
+	asyncTest("Share link (facebook.ui)", 1, function () {
 		var obj = {
 			method: 'share',
 			href: 'https://trigger.io' /* TODO it used to be link!? */
 		};
 		forge.facebook.ui(obj, function (res) {
 			ok(res.post_id);
+			start();
+		}, function (err) {
+			ok(false, JSON.stringify(err));
+			start();
+		});
+	});
+
+	// facebook.share
+	asyncTest("Share link (facebook.share)", 1, function () {
+		forge.facebook.share("https://trigger.io", function () {
+			ok(true);
 			start();
 		}, function (err) {
 			ok(false, JSON.stringify(err));
@@ -172,4 +183,5 @@ if (forge.is.mobile()) {
 			});
 		});
 	}
+
 }

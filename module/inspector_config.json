@@ -2,7 +2,8 @@
 	"modules": {},
 	"this_module": {
 		"config": {
-			"appid": "617039718370339"
+			"appid": "617039718370339",
+			"displayName": "Trigger.io Inspector"
 		}
 	}
 }

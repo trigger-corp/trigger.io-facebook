@@ -109,9 +109,21 @@ forge['facebook'] = {
 			}
 		}, error);
 	},
+	'share': function (url, success, error) {
+		forge.internal.call("facebook.share", { url: url }, success, error);
+	},
 	'installed': function (success, error) {
 		forge.internal.call("facebook.installed", {}, success, error);
 	},
+	'getKeyHash': function (success, error) {
+		if (forge.is.android()) {
+			forge.internal.call("facebook.getKeyHash", {}, success, error);
+		} else {
+			forge.logging.warn("forge.facebook.getKeyHash() is only supported on Android");
+			success("");
+		}
+	},
+
 	/**
 	 * Known valid permissions
 	 * From: https://developers.facebook.com/docs/facebook-login/permissions/v2.0#reference
@@ -148,8 +160,5 @@ forge['facebook'] = {
 	 */
 	'enablePlatformCompatibility': function (success, error) {
 		forge.internal.call("facebook.enablePlatformCompatibility", {}, success, error);
-	},
-	'getKeyHash': function (success, error) {
-		forge.internal.call("facebook.getKeyHash", {}, success, error);
 	}
 };

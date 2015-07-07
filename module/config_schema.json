@@ -6,6 +6,11 @@
 			"description": "App ID from Facebook developers site.",
 			"required": true,
 			"type": "string"
-		}
+		},
+    "displayName": {
+      "description": "Display name as provided in the Facebook app settings.",
+      "required": true,
+      "type": "string"
+    }
 	}
 }

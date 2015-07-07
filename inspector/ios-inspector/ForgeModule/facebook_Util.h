@@ -19,4 +19,6 @@
 + (FBSessionDefaultAudience)lookupAudience:(NSString*)audience;
 + (void)handleError:(NSError *)error task:(ForgeTask*)task;
 + (void)handleError:(NSError *)error task:(ForgeTask*)task closeSession:(BOOL)closeSession;
++ (NSDictionary*)parseURLParams:(NSString *)query;
++ (NSString *)checkErrorMessage:(NSError *)error;
 @end

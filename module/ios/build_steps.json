@@ -2,6 +2,8 @@
     { "do": { "add_ios_system_framework": "Accounts.framework" } },
     { "do": { "add_ios_system_framework": "Social.framework" } },
 	{ "do": { "add_ios_system_framework": "libsqlite3.dylib" } },
-	{ "do": { "ios_add_url_handler": { "scheme": "fb{{modules.facebook.config.appid}}"}}}
+	{ "do": { "ios_add_url_handler": { "scheme": "fb{{modules.facebook.config.appid}}"}}},
+  { "do": { "set_in_info_plist": { "key": "FacebookAppID", "value": "{{modules.facebook.config.appid}}"}}},
+  { "do": { "set_in_info_plist": { "key": "FacebookDisplayName", "value": "{{modules.facebook.config.displayName}}"}}}
 ]
 

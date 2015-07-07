@@ -95,6 +95,84 @@
 	[facebook dialog:method andParams:paramsDict andDelegate:delegate];
 }
 
+
++ (void)share:(ForgeTask*)task url:(NSString*)url {
+
+	FBLinkShareParams *params = [[FBLinkShareParams alloc] init];
+	params.link = [NSURL URLWithString:url];
+
+	if ([FBDialogs canPresentShareDialogWithParams:params]) {
+		[FBDialogs presentShareDialogWithLink:params.link
+									  handler:^(FBAppCall *call, NSDictionary *results, NSError *error) {
+										  if(error) {
+											  [task error:[facebook_Util checkErrorMessage:error]];
+										  } else {
+											  NSMutableDictionary *taskResult = [[NSMutableDictionary alloc] init];
+											  [taskResult setValue:@"NativeShareDialog" forKey:@"type"];
+
+											  // the completionGesture will only be returned if the user authed with the FB app once before
+											  if (results[@"completionGesture"] &&
+												  [results[@"completionGesture"] isEqualToString:@"cancel"]) {
+												  // User cancelled.
+												  [taskResult setValue:[NSNumber numberWithBool:YES] forKey:@"cancelled"];
+											  }
+
+											  [task success:taskResult];
+										  }
+									  }];
+	} else if ([FBDialogs canPresentOSIntegratedShareDialogWithSession:nil]) {
+		[FBDialogs
+		 presentOSIntegratedShareDialogModallyFrom:[[ForgeApp sharedApp] viewController]
+		 initialText:nil
+		 image:nil
+		 url:params.link
+		 handler:^(FBOSIntegratedShareDialogResult result, NSError *error) {
+			 if (error) {
+				 [task error:[facebook_Util checkErrorMessage:error]];
+			 } else {
+				 NSMutableDictionary *taskResult = [[NSMutableDictionary alloc] init];
+				 [taskResult setValue:@"OSIntegratedShareDialog" forKey:@"type"];
+
+				 if (result == FBOSIntegratedShareDialogResultCancelled) {
+					 // User cancelled.
+					 [taskResult setValue:[NSNumber numberWithBool:YES] forKey:@"cancelled"];
+				 }
+
+				 [task success:taskResult];
+			 }
+		 }];
+	} else {
+		NSMutableDictionary *params = [[NSMutableDictionary alloc] init];
+		[params setObject:url forKey:@"link"];
+
+		[FBWebDialogs presentFeedDialogModallyWithSession:nil
+											   parameters:params
+												  handler:^(FBWebDialogResult result, NSURL *resultURL, NSError *error) {
+													  if (error) {
+														  [task error:[facebook_Util checkErrorMessage:error]];
+													  } else {
+														  NSMutableDictionary *taskResult = [[NSMutableDictionary alloc] init];
+														  [taskResult setValue:@"WebShareDialog" forKey:@"type"];
+
+														  if (result == FBWebDialogResultDialogNotCompleted) {
+															  // User cancelled.
+															  [taskResult setValue:[NSNumber numberWithBool:YES] forKey:@"cancelled"];
+														  } else {
+															  NSDictionary *urlParams = [facebook_Util parseURLParams:[resultURL query]];
+
+															  if (![urlParams valueForKey:@"post_id"]) {
+																  // User cancelled.
+																  [taskResult setValue:[NSNumber numberWithBool:YES] forKey:@"cancelled"];
+															  }
+														  }
+
+														  [task success:taskResult];
+													  }
+												  }];
+	}
+}
+
+
 + (void)installed:(ForgeTask*)task {
     // see approach below if we're getting false positives
     if ([[UIApplication sharedApplication] canOpenURL:[NSURL URLWithString:@"fb://profile"]]) {
@@ -113,10 +191,12 @@
 	*/
 }
 
+
 + (void)enablePlatformCompatibility:(ForgeTask*)task {
 	// WARNING: This will probably stop working after December 25
 	[FBSettings enablePlatformCompatibility:true];
 	[task success:[NSNumber numberWithBool:YES]];
 }
+
 
 @end
