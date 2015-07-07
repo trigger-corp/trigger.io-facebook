@@ -1,8 +1,8 @@
 {
-	"changes": "* New method: facebook.getKeyHash (Android only)",
+	"changes": "* Updated Facebook Android SDK to 3.23.1\n* Updated Facebook iOS SDK to 3.23.2\n* New method: facebook.share()",
 	"description": "Access the Facebook SDK.\n\nThe facebook module allows access to native Facebook SDK features including SSO authentication through the Facebook app, Facebook share dialog access and Facebook graph API access.",
-	"min_platform_version": "v2.2.0",
+	"min_platform_version": "v2.2.13",
 	"namespace": "facebook",
-	"platform_version": "v2.2.5",
-	"version": "2.11"
+	"platform_version": "v2.2.13",
+	"version": "2.12"
 }
