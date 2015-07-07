@@ -13,7 +13,7 @@
 		71334C5316B7D86300F95C9D /* facebook_RequestDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 71334C4D16B7D86300F95C9D /* facebook_RequestDelegate.m */; };
 		71334C5416B7D86300F95C9D /* facebook_Util.m in Sources */ = {isa = PBXBuildFile; fileRef = 71334C4F16B7D86300F95C9D /* facebook_Util.m */; };
 		713BBDF51B4679E6006EBABF /* FacebookSDK in Frameworks */ = {isa = PBXBuildFile; fileRef = 713BBDBF1B4679E6006EBABF /* FacebookSDK */; };
-		713BBE081B467CB7006EBABF /* Bolts in Frameworks */ = {isa = PBXBuildFile; fileRef = 713BBDF81B467CB7006EBABF /* Bolts */; };
+		71466A691B4C1A1500F4211C /* Bolts in Frameworks */ = {isa = PBXBuildFile; fileRef = 71466A561B4C1A1500F4211C /* Bolts */; };
 		718C907C18EAC2FB001E2FEC /* facebook_LoginDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 718C907B18EAC2FB001E2FEC /* facebook_LoginDelegate.m */; };
 		B31B6D5215C13D5200854074 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B31B6D5115C13D5200854074 /* Foundation.framework */; };
 		B31B6D6F15C1467100854074 /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B31B6D6E15C1467100854074 /* CoreFoundation.framework */; };
@@ -146,21 +146,24 @@
 		713BBDF21B4679E6006EBABF /* FBViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FBViewController.h; sourceTree = "<group>"; };
 		713BBDF31B4679E6006EBABF /* FBWebDialogs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FBWebDialogs.h; sourceTree = "<group>"; };
 		713BBDF41B4679E6006EBABF /* NSError+FBError.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSError+FBError.h"; sourceTree = "<group>"; };
-		713BBDF81B467CB7006EBABF /* Bolts */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = Bolts; path = Bolts.framework/Bolts; sourceTree = "<group>"; };
-		713BBDFA1B467CB7006EBABF /* BFAppLink.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BFAppLink.h; sourceTree = "<group>"; };
-		713BBDFB1B467CB7006EBABF /* BFAppLinkNavigation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BFAppLinkNavigation.h; sourceTree = "<group>"; };
-		713BBDFC1B467CB7006EBABF /* BFAppLinkResolving.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BFAppLinkResolving.h; sourceTree = "<group>"; };
-		713BBDFD1B467CB7006EBABF /* BFAppLinkReturnToRefererController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BFAppLinkReturnToRefererController.h; sourceTree = "<group>"; };
-		713BBDFE1B467CB7006EBABF /* BFAppLinkReturnToRefererView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BFAppLinkReturnToRefererView.h; sourceTree = "<group>"; };
-		713BBDFF1B467CB7006EBABF /* BFAppLinkTarget.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BFAppLinkTarget.h; sourceTree = "<group>"; };
-		713BBE001B467CB7006EBABF /* BFExecutor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BFExecutor.h; sourceTree = "<group>"; };
-		713BBE011B467CB7006EBABF /* BFMeasurementEvent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BFMeasurementEvent.h; sourceTree = "<group>"; };
-		713BBE021B467CB7006EBABF /* BFTask.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BFTask.h; sourceTree = "<group>"; };
-		713BBE031B467CB7006EBABF /* BFTaskCompletionSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BFTaskCompletionSource.h; sourceTree = "<group>"; };
-		713BBE041B467CB7006EBABF /* BFURL.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BFURL.h; sourceTree = "<group>"; };
-		713BBE051B467CB7006EBABF /* BFWebViewAppLinkResolver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BFWebViewAppLinkResolver.h; sourceTree = "<group>"; };
-		713BBE061B467CB7006EBABF /* Bolts.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Bolts.h; sourceTree = "<group>"; };
-		713BBE071B467CB7006EBABF /* BoltsVersion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BoltsVersion.h; sourceTree = "<group>"; };
+		71466A561B4C1A1500F4211C /* Bolts */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = Bolts; path = Bolts.framework/Bolts; sourceTree = "<group>"; };
+		71466A581B4C1A1500F4211C /* BFAppLink.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BFAppLink.h; sourceTree = "<group>"; };
+		71466A591B4C1A1500F4211C /* BFAppLinkNavigation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BFAppLinkNavigation.h; sourceTree = "<group>"; };
+		71466A5A1B4C1A1500F4211C /* BFAppLinkResolving.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BFAppLinkResolving.h; sourceTree = "<group>"; };
+		71466A5B1B4C1A1500F4211C /* BFAppLinkReturnToRefererController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BFAppLinkReturnToRefererController.h; sourceTree = "<group>"; };
+		71466A5C1B4C1A1500F4211C /* BFAppLinkReturnToRefererView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BFAppLinkReturnToRefererView.h; sourceTree = "<group>"; };
+		71466A5D1B4C1A1500F4211C /* BFAppLinkTarget.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BFAppLinkTarget.h; sourceTree = "<group>"; };
+		71466A5E1B4C1A1500F4211C /* BFCancellationToken.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BFCancellationToken.h; sourceTree = "<group>"; };
+		71466A5F1B4C1A1500F4211C /* BFCancellationTokenRegistration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BFCancellationTokenRegistration.h; sourceTree = "<group>"; };
+		71466A601B4C1A1500F4211C /* BFCancellationTokenSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BFCancellationTokenSource.h; sourceTree = "<group>"; };
+		71466A611B4C1A1500F4211C /* BFExecutor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BFExecutor.h; sourceTree = "<group>"; };
+		71466A621B4C1A1500F4211C /* BFMeasurementEvent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BFMeasurementEvent.h; sourceTree = "<group>"; };
+		71466A631B4C1A1500F4211C /* BFTask.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BFTask.h; sourceTree = "<group>"; };
+		71466A641B4C1A1500F4211C /* BFTaskCompletionSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BFTaskCompletionSource.h; sourceTree = "<group>"; };
+		71466A651B4C1A1500F4211C /* BFURL.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BFURL.h; sourceTree = "<group>"; };
+		71466A661B4C1A1500F4211C /* BFWebViewAppLinkResolver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BFWebViewAppLinkResolver.h; sourceTree = "<group>"; };
+		71466A671B4C1A1500F4211C /* Bolts.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Bolts.h; sourceTree = "<group>"; };
+		71466A681B4C1A1500F4211C /* BoltsVersion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BoltsVersion.h; sourceTree = "<group>"; };
 		718C907A18EAC2FB001E2FEC /* facebook_LoginDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = facebook_LoginDelegate.h; sourceTree = "<group>"; };
 		718C907B18EAC2FB001E2FEC /* facebook_LoginDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = facebook_LoginDelegate.m; sourceTree = "<group>"; };
 		B31B6D4E15C13D5200854074 /* libForgeModule.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libForgeModule.a; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -180,7 +183,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B3FC524815C17B2C003574D9 /* SystemConfiguration.framework in Frameworks */,
-				713BBE081B467CB7006EBABF /* Bolts in Frameworks */,
+				71466A691B4C1A1500F4211C /* Bolts in Frameworks */,
 				B3FC524215C177EA003574D9 /* AssetsLibrary.framework in Frameworks */,
 				B3FC51FF15C1523D003574D9 /* CoreGraphics.framework in Frameworks */,
 				B3FC51F815C151E5003574D9 /* UIKit.framework in Frameworks */,
@@ -349,29 +352,32 @@
 		713BBDF71B467C9F006EBABF /* Bolts.framework */ = {
 			isa = PBXGroup;
 			children = (
-				713BBDF81B467CB7006EBABF /* Bolts */,
-				713BBDF91B467CB7006EBABF /* Headers */,
+				71466A561B4C1A1500F4211C /* Bolts */,
+				71466A571B4C1A1500F4211C /* Headers */,
 			);
 			name = Bolts.framework;
 			sourceTree = "<group>";
 		};
-		713BBDF91B467CB7006EBABF /* Headers */ = {
+		71466A571B4C1A1500F4211C /* Headers */ = {
 			isa = PBXGroup;
 			children = (
-				713BBDFA1B467CB7006EBABF /* BFAppLink.h */,
-				713BBDFB1B467CB7006EBABF /* BFAppLinkNavigation.h */,
-				713BBDFC1B467CB7006EBABF /* BFAppLinkResolving.h */,
-				713BBDFD1B467CB7006EBABF /* BFAppLinkReturnToRefererController.h */,
-				713BBDFE1B467CB7006EBABF /* BFAppLinkReturnToRefererView.h */,
-				713BBDFF1B467CB7006EBABF /* BFAppLinkTarget.h */,
-				713BBE001B467CB7006EBABF /* BFExecutor.h */,
-				713BBE011B467CB7006EBABF /* BFMeasurementEvent.h */,
-				713BBE021B467CB7006EBABF /* BFTask.h */,
-				713BBE031B467CB7006EBABF /* BFTaskCompletionSource.h */,
-				713BBE041B467CB7006EBABF /* BFURL.h */,
-				713BBE051B467CB7006EBABF /* BFWebViewAppLinkResolver.h */,
-				713BBE061B467CB7006EBABF /* Bolts.h */,
-				713BBE071B467CB7006EBABF /* BoltsVersion.h */,
+				71466A581B4C1A1500F4211C /* BFAppLink.h */,
+				71466A591B4C1A1500F4211C /* BFAppLinkNavigation.h */,
+				71466A5A1B4C1A1500F4211C /* BFAppLinkResolving.h */,
+				71466A5B1B4C1A1500F4211C /* BFAppLinkReturnToRefererController.h */,
+				71466A5C1B4C1A1500F4211C /* BFAppLinkReturnToRefererView.h */,
+				71466A5D1B4C1A1500F4211C /* BFAppLinkTarget.h */,
+				71466A5E1B4C1A1500F4211C /* BFCancellationToken.h */,
+				71466A5F1B4C1A1500F4211C /* BFCancellationTokenRegistration.h */,
+				71466A601B4C1A1500F4211C /* BFCancellationTokenSource.h */,
+				71466A611B4C1A1500F4211C /* BFExecutor.h */,
+				71466A621B4C1A1500F4211C /* BFMeasurementEvent.h */,
+				71466A631B4C1A1500F4211C /* BFTask.h */,
+				71466A641B4C1A1500F4211C /* BFTaskCompletionSource.h */,
+				71466A651B4C1A1500F4211C /* BFURL.h */,
+				71466A661B4C1A1500F4211C /* BFWebViewAppLinkResolver.h */,
+				71466A671B4C1A1500F4211C /* Bolts.h */,
+				71466A681B4C1A1500F4211C /* BoltsVersion.h */,
 			);
 			name = Headers;
 			path = Bolts.framework/Headers;
