@@ -206,7 +206,7 @@ containing a value of this type.
         public static int title_text=0x7f010003;
         static {
             try {
-                Class<?> realRClass = Class.forName("io.trigger.forge.android.inspector.R$attr");
+                Class<?> realRClass = Class.forName("com.facebook.android.R$attr");
 	            for (Field f : attr.class.getDeclaredFields()) {
 	                try {
 	                    f.set(null, realRClass.getDeclaredField(f.getName()).get(null));
@@ -237,7 +237,7 @@ containing a value of this type.
         public static int com_facebook_usersettingsfragment_not_connected_text_color=0x7f050005;
         static {
             try {
-                Class<?> realRClass = Class.forName("io.trigger.forge.android.inspector.R$color");
+                Class<?> realRClass = Class.forName("com.facebook.android.R$color");
 	            for (Field f : color.class.getDeclaredFields()) {
 	                try {
 	                    f.set(null, realRClass.getDeclaredField(f.getName()).get(null));
@@ -286,7 +286,7 @@ containing a value of this type.
         public static int com_facebook_usersettingsfragment_profile_picture_width=0x7f040002;
         static {
             try {
-                Class<?> realRClass = Class.forName("io.trigger.forge.android.inspector.R$dimen");
+                Class<?> realRClass = Class.forName("com.facebook.android.R$dimen");
 	            for (Field f : dimen.class.getDeclaredFields()) {
 	                try {
 	                    f.set(null, realRClass.getDeclaredField(f.getName()).get(null));
@@ -354,7 +354,7 @@ containing a value of this type.
         public static int com_facebook_usersettingsfragment_background_gradient=0x7f02002e;
         static {
             try {
-                Class<?> realRClass = Class.forName("io.trigger.forge.android.inspector.R$drawable");
+                Class<?> realRClass = Class.forName("com.facebook.android.R$drawable");
 	            for (Field f : drawable.class.getDeclaredFields()) {
 	                try {
 	                    f.set(null, realRClass.getDeclaredField(f.getName()).get(null));
@@ -412,7 +412,7 @@ containing a value of this type.
         public static int top=0x7f080008;
         static {
             try {
-                Class<?> realRClass = Class.forName("io.trigger.forge.android.inspector.R$id");
+                Class<?> realRClass = Class.forName("com.facebook.android.R$id");
 	            for (Field f : id.class.getDeclaredFields()) {
 	                try {
 	                    f.set(null, realRClass.getDeclaredField(f.getName()).get(null));
@@ -447,7 +447,7 @@ containing a value of this type.
         public static int com_facebook_usersettingsfragment=0x7f03000e;
         static {
             try {
-                Class<?> realRClass = Class.forName("io.trigger.forge.android.inspector.R$layout");
+                Class<?> realRClass = Class.forName("com.facebook.android.R$layout");
 	            for (Field f : layout.class.getDeclaredFields()) {
 	                try {
 	                    f.set(null, realRClass.getDeclaredField(f.getName()).get(null));
@@ -496,7 +496,7 @@ containing a value of this type.
         public static int com_facebook_usersettingsfragment_not_logged_in=0x7f06000c;
         static {
             try {
-                Class<?> realRClass = Class.forName("io.trigger.forge.android.inspector.R$string");
+                Class<?> realRClass = Class.forName("com.facebook.android.R$string");
 	            for (Field f : string.class.getDeclaredFields()) {
 	                try {
 	                    f.set(null, realRClass.getDeclaredField(f.getName()).get(null));
@@ -519,7 +519,7 @@ containing a value of this type.
         public static int tooltip_bubble_text=0x7f070002;
         static {
             try {
-                Class<?> realRClass = Class.forName("io.trigger.forge.android.inspector.R$style");
+                Class<?> realRClass = Class.forName("com.facebook.android.R$style");
 	            for (Field f : style.class.getDeclaredFields()) {
 	                try {
 	                    f.set(null, realRClass.getDeclaredField(f.getName()).get(null));
@@ -984,7 +984,7 @@ containing a value of this type.
         public static int com_facebook_profile_picture_view_preset_size = 0;
         static {
             try {
-                Class<?> realRClass = Class.forName("io.trigger.forge.android.inspector.R$styleable");
+                Class<?> realRClass = Class.forName("com.facebook.android.R$styleable");
 	            for (Field f : styleable.class.getDeclaredFields()) {
 	                try {
 	                    f.set(null, realRClass.getDeclaredField(f.getName()).get(null));
