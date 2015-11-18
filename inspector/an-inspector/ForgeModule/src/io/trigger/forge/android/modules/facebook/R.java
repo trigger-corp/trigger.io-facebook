@@ -4,7 +4,7 @@
  * To add more resources: rebuild the inspector project.
  */
 
-package com.facebook.android;
+package io.trigger.forge.android.modules.facebook;
 
 import java.lang.reflect.Field;
 import android.util.Log;
