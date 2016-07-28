@@ -1,8 +1,14 @@
 {
-	"changes": "* Fixed: ClassCastException during Android startup.",
+	"changes": "* Fixed: Resolved conflict with Open Source Parse SDK.",
 	"description": "Access the Facebook SDK.\n\nThe facebook module allows access to native Facebook SDK features including SSO authentication through the Facebook app, Facebook share dialog access and Facebook graph API access.",
-	"min_platform_version": "v2.2.16",
+	"min_platform_version": "v2.4.6",
 	"namespace": "facebook",
-	"platform_version": "v2.2.16",
-	"version": "2.16"
+	"platform_version": "v2.4.6",
+	"version": "2.17",
+	"dependencies": {
+		"bolts": {
+			"minimum_version": "1.6.0",
+			"maximum_version": "1.6.0"
+		}
+	}
 }

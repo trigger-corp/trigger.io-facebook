@@ -1,5 +1,9 @@
 {
-	"modules": {},
+	"modules": {
+		"bolts": {
+			"version": "1.6.0"
+		}
+	},
 	"this_module": {
 		"config": {
 			"appid": "617039718370339",

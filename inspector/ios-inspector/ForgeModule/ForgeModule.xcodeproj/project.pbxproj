@@ -13,7 +13,6 @@
 		71334C5316B7D86300F95C9D /* facebook_RequestDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 71334C4D16B7D86300F95C9D /* facebook_RequestDelegate.m */; };
 		71334C5416B7D86300F95C9D /* facebook_Util.m in Sources */ = {isa = PBXBuildFile; fileRef = 71334C4F16B7D86300F95C9D /* facebook_Util.m */; };
 		713BBDF51B4679E6006EBABF /* FacebookSDK in Frameworks */ = {isa = PBXBuildFile; fileRef = 713BBDBF1B4679E6006EBABF /* FacebookSDK */; };
-		71466A691B4C1A1500F4211C /* Bolts in Frameworks */ = {isa = PBXBuildFile; fileRef = 71466A561B4C1A1500F4211C /* Bolts */; };
 		718C907C18EAC2FB001E2FEC /* facebook_LoginDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 718C907B18EAC2FB001E2FEC /* facebook_LoginDelegate.m */; };
 		B31B6D5215C13D5200854074 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B31B6D5115C13D5200854074 /* Foundation.framework */; };
 		B31B6D6F15C1467100854074 /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B31B6D6E15C1467100854074 /* CoreFoundation.framework */; };
@@ -146,7 +145,6 @@
 		713BBDF21B4679E6006EBABF /* FBViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FBViewController.h; sourceTree = "<group>"; };
 		713BBDF31B4679E6006EBABF /* FBWebDialogs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FBWebDialogs.h; sourceTree = "<group>"; };
 		713BBDF41B4679E6006EBABF /* NSError+FBError.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSError+FBError.h"; sourceTree = "<group>"; };
-		71466A561B4C1A1500F4211C /* Bolts */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = Bolts; path = Bolts.framework/Bolts; sourceTree = "<group>"; };
 		71466A581B4C1A1500F4211C /* BFAppLink.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BFAppLink.h; sourceTree = "<group>"; };
 		71466A591B4C1A1500F4211C /* BFAppLinkNavigation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BFAppLinkNavigation.h; sourceTree = "<group>"; };
 		71466A5A1B4C1A1500F4211C /* BFAppLinkResolving.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BFAppLinkResolving.h; sourceTree = "<group>"; };
@@ -183,7 +181,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				B3FC524815C17B2C003574D9 /* SystemConfiguration.framework in Frameworks */,
-				71466A691B4C1A1500F4211C /* Bolts in Frameworks */,
 				B3FC524215C177EA003574D9 /* AssetsLibrary.framework in Frameworks */,
 				B3FC51FF15C1523D003574D9 /* CoreGraphics.framework in Frameworks */,
 				B3FC51F815C151E5003574D9 /* UIKit.framework in Frameworks */,
@@ -352,7 +349,6 @@
 		713BBDF71B467C9F006EBABF /* Bolts.framework */ = {
 			isa = PBXGroup;
 			children = (
-				71466A561B4C1A1500F4211C /* Bolts */,
 				71466A571B4C1A1500F4211C /* Headers */,
 			);
 			name = Bolts.framework;
